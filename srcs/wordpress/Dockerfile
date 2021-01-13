@@ -1,32 +1,32 @@
 FROM	alpine
 LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
 
-ARG     WP_LOCALE="en_US"
+ENV     WP_LOCALE="en_US"
 
-ARG     WWW_USER="www-data"
 ARG     NGINX_ROOT="/var/www"
-ARG     WEB_ROOT="${NGINX_ROOT}/wordpress"
 
-ARG     PHP_VERSION="7"
-ARG     WPCLI_VERSION="1.5.1"
+ENV     WWW_DOMAIN="wordpress"
+ENV     WWW_USER="www-dataa"
+ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
 
-ENV PHP_FPM_LISTEN_MODE="0660"
-ENV PHP_MEMORY_LIMIT="512M"
-ENV PHP_MAX_UPLOAD="50M"
-ENV PHP_MAX_FILE_UPLOAD="200"
-ENV PHP_MAX_POST="100M"
-ENV PHP_DISPLAY_ERRORS="On"
-ENV PHP_DISPLAY_STARTUP_ERRORS="On"
-ENV PHP_ERROR_REPORTING="E_COMPILE_ERROR\|E_RECOVERABLE_ERROR\|E_ERROR\|E_CORE_ERROR"
-ENV PHP_CGI_FIX_PATHINFO=0
+ENV     PHP_VERSION="7"
 
-ADD     https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+# dependencies
+RUN     apk --update --no-cache add bash openssl wget bind-tools
 
-# installing dependencies
+
+# openssl generation
+RUN     openssl req -x509 -nodes \
+        -days 365 \
+        -subj "/C=FR/ST=69/O=Company, Inc./CN=${WWW_DOMAIN}" \
+        -addext "subjectAltName=DNS:${WWW_DOMAIN}" \
+        -newkey rsa:2048 \
+        -keyout /etc/ssl/private/nginx-selfsigned.key \
+        -out /etc/ssl/certs/nginx-selfsigned.crt;
+
+
+# php install
 RUN     apk --update --no-cache add \
-        bash \
-        curl \
-        freetype-dev \
         php${PHP_VERSION} \
         php${PHP_VERSION}-fpm \
         php${PHP_VERSION}-json \
@@ -55,49 +55,74 @@ RUN     apk --update --no-cache add \
         php${PHP_VERSION}-pecl-imagick \
         php${PHP_VERSION}-zip
 
+
 # php-fpm config
 COPY    ./config/php/www.conf /etc/php${PHP_VERSION}/php-fpm.d/www.conf
+COPY    ./config/php/php-fpm.conf /etc/php${PHP_VERSION}/php-fpm.conf
 RUN     sed -i /etc/php7/php-fpm.d/www.conf\
-	-e "s|;listen.owner\s*=\s*nobody|listen.owner = ${WWW_USER}|g"\
-	-e "s|;listen.group\s*=\s*nobody|listen.group = ${WWW_USER}|g"\
-        -e "s|;listen.mode\s*=\s*0660|listen.mode = 0660|g"\
-	-e "s|user\s*=\s*nobody|user = ${WWW_USER}|g"\
-	-e "s|group\s*=\s*nobody|group = ${WWW_USER}|g"\
-	-e "s|;log_level\s*=\s*notice|log_level = notice|g"\
-	/etc/php7/php-fpm.d/www.conf
+	-e "s+WWW_USER+${WWW_USER}+g" \
+	-e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" \
+	-e "s+WWW_ROOT+${WWW_ROOT}+g" && \
+        sed -i /etc/php7/php-fpm.conf \
+	-e "s+WWW_USER+${WWW_USER}+g" \
+	-e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" \
+	-e "s+WWW_ROOT+${WWW_ROOT}+g"
+
+# add www user
+RUN     adduser -D -g "${WWW_USER}" ${WWW_USER} && \
+        mkdir -p ${WWW_ROOT} && \
+        chmod -R 775 /home/${WWW_USER}
+
 
 # nginx install
 RUN     apk --update --no-cache add nginx && \
-        mkdir -p /run/nginx/ 
+        mkdir -p /run/nginx && \
+        chown -R ${WWW_USER}:${WWW_USER} /var/lib/nginx && \
+        chown -R ${WWW_USER}:${WWW_USER} ${NGINX_ROOT} && \
+        chown -R ${WWW_USER}:${WWW_USER} /run/nginx && \
+        chmod -R 775 ${NGINX_ROOT}
 
-# add WWW user
-RUN     adduser -D -G${WWW_USER} ${WWW_USER} && \
-	chown -R ${WWW_USER}:${WWW_USER} /var/lib/nginx && \
-        chmod -R 775 /home/${WWW_USER}
 
-# nginx config
-RUN     mkdir -p /etc/nginx/old-conf/ && \
-        mv /etc/nginx/nginx.conf /etc/nginx/old-conf/nginx.conf.origin
-COPY    ./config/nginx/index.html ${WEB_ROOT}/index.html
-COPY    ./config/nginx/wordpress.conf /etc/nginx/sites-enabled/wordpress.conf
+# nginx copy config
+COPY    ./config/nginx/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf
 COPY    ./config/nginx/nginx.conf /etc/nginx/nginx.conf
-RUN     mkdir -p ${WEB_ROOT} && \
-        sed -i "s+WEB_ROOT+${WEB_ROOT}+g" /etc/nginx/nginx.conf && \
-        sed -i "s/USER_WWW/${WWW_USER}/g" /etc/nginx/nginx.conf && \
-        sed -i "s+root /var/www/html+root ${WEB_ROOT}+g" /etc/nginx/sites-enabled/wordpress.conf && \
-        chmod -R 755 ${NGINX_ROOT} && \
-        chown -R ${WWW_USER}:${WWW_USER} ${NGINX_ROOT}
+# nginx copy default html
+COPY    ./config/nginx/index.html ${WWW_ROOT}/index.html
+
+# nginx enable server block in /etc/nginx/sites-available/
+RUN     mkdir -p /etc/nginx/sites-enabled/ && \
+        ln -s /etc/nginx/sites-available/${WWW_DOMAIN}.conf /etc/nginx/sites-enabled/ && \
+        chown -R ${WWW_USER}:${WWW_USER} /etc/nginx/sites-enabled
+
+# nginx edit config
+RUN      sed -i /etc/nginx/nginx.conf \
+	-e "s+WWW_USER+${WWW_USER}+g" \
+	-e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" \
+	-e "s+WWW_ROOT+${WWW_ROOT}+g" && \
+        sed -i /etc/nginx/sites-available/${WWW_DOMAIN}.conf \
+	-e "s+WWW_USER+${WWW_USER}+g" \
+	-e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" \
+	-e "s+WWW_ROOT+${WWW_ROOT}+g"
+
+# nginx check config
+RUN     nginx -t && \
+        if [ "$?" -eq "1" ] ; then \
+                exit 1 ; \
+        fi
+
 
 # wpcli install
 RUN     wget -qO /usr/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
         chmod +x /usr/bin/wp
 
 # wordpress install
-RUN     wp --path=${WEB_ROOT} core download --locale=${WP_LOCALE} && \
-	cp ${WEB_ROOT}/wp-config-sample.php ${WEB_ROOT}/wp-config.php && \
-        chmod -R 755 ${WEB_ROOT} && \
-        chown -R ${WWW_USER}:${WWW_USER} ${WEB_ROOT}
+RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE} && \
+	cp ${WWW_ROOT}/wp-config-sample.php ${WWW_ROOT}/wp-config.php && \
+        chmod -R 755 ${WWW_ROOT} && \
+        chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT}
+
 
 EXPOSE  5050
 
-CMD     php-fpm7 -DR && nginx -g "daemon off;"
+
+CMD     php-fpm7 && nginx

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx_app
+  template:
+    metadata:
+      name: nginx_pod
+      labels:
+        app: nginx_app
+    spec:
+      containers:
+      - name: nginx_container
+        image: nginx_image
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: nginx
+        - containerPort: 443
+          name: nginx_tls
+        - containerPort: 22
+          name: nginx_ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 22
