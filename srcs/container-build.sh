@@ -123,7 +123,7 @@ build_error=0
 build ()
 {
     echo $prefix "Building image :" $image_name $reset
-    docker build --rm -t $image_name $image_path
+    docker build -t $image_name $image_path
     build_error=$?
     if [[ "$build_error" != "0" ]]
     then
