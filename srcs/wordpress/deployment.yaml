@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-app
+  template:
+    metadata:
+      name: wordpress-pod
+      labels:
+        app: wordpress-app
+    spec:
+      containers:
+      - name: wordpress-container
+        image: wordpress-image
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5050
+          name: wordpress
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: wordpress-app
+  ports:
+    - protocol: TCP
+      port: 5050
+      name: wordpress

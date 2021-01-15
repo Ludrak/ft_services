@@ -6,37 +6,40 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx_app
+      app: nginx-app
   template:
     metadata:
-      name: nginx_pod
+      name: nginx-pod
       labels:
-        app: nginx_app
+        app: nginx-app
     spec:
       containers:
-      - name: nginx_container
-        image: nginx_image
-        imagePullPolicy: Always
+      - name: nginx-container
+        image: nginx-image
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
           name: nginx
         - containerPort: 443
-          name: nginx_tls
+          name: nginx-tls
         - containerPort: 22
-          name: nginx_ssh
+          name: nginx-ssh
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: nginx-loadbalancer
 spec:
   type: LoadBalancer
   selector:
-    app: nginx
+    app: nginx-app
   ports:
     - protocol: TCP
       port: 80
+      name: nginx
     - protocol: TCP
       port: 443
+      name: nginx-tls
     - protocol: TCP
       port: 22
+      name: nginx-ssh
