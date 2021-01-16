@@ -6,6 +6,7 @@ then
     echo "Minikube is not installed."
     exit 1
 fi
+minikube start
 
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
@@ -20,8 +21,6 @@ then
     kubectl create -f metallb/configmap.yaml
 fi
 
-minikube start
-
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )
@@ -32,7 +31,9 @@ eval $(minikube docker-env)
 # build docker image
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
 sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/
+sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
 
 # deploy service
 kubectl create -f srcs/nginx/deployment.yaml
 kubectl create -f srcs/wordpress/deployment.yaml
+kubectl create -f srcs/phpmyadmin/deployment.yaml
