@@ -1,0 +1,51 @@
+#TODO auto create secrets for mysql password
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpmyadmin-app
+  template:
+    metadata:
+      name: phpmyadmin-pod
+      labels:
+        app: phpmyadmin-app
+    spec:
+      containers:
+      - name: phpmyadmin-container
+        image: phpmyadmin-image
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 80
+            name: phpmyadmin
+        env:
+          - name: PMA_HOST
+            value: mysql-service
+          - name: PMA_PORT
+            value: "3306"
+          - name: MYSQL_ROOT_PASSWORD
+            value: "root-password"
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: mysql-secrets
+            #     key: root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: phpmyadmin-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      name: phpmyadmin
+    - protocol: TCP
+      port: 3306
+      name: phpdatabase
