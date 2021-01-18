@@ -12,15 +12,18 @@ minikube start --vm-driver=virtualbox
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
     kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-    kubectl create -f metallb/configmap.yaml
+    sh ./srcs/metallb/create_configmap.sh
+    kubectl create -f srcs/metallb/configmap.yaml
 
 # check if metalLB is enabled
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     minikube addons enable metallb
-    kubectl create -f metallb/configmap.yaml
+    sh ./srcs/metallb/create_configmap.sh
+    kubectl create -f srcs/metallb/configmap.yaml
 fi
-kubectl apply -f srcs/configmap.yaml
+sh ./srcs/metallb/create_configmap.sh
+kubectl apply -f srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
