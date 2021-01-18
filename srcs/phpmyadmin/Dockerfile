@@ -1,4 +1,4 @@
-FROM    alpine
+FROM    alpine:3.12
 LABEL	maintainer Nathan Lecaille <nlecaill@student.42lyon.fr>
 
 # update system

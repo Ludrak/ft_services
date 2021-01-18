@@ -20,10 +20,14 @@ then
     minikube addons enable metallb
     kubectl create -f metallb/configmap.yaml
 fi
+kubectl apply -f srcs/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )
+
+kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
 
 # switch docker to minikube docker
 eval $(minikube docker-env)
