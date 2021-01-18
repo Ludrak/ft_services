@@ -29,6 +29,9 @@ kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 
 kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
 
+kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep mariadb-loadbalancer | cut -d ' ' -f 1 )
+
 # switch docker to minikube docker
 eval $(minikube docker-env)
 
@@ -36,8 +39,10 @@ eval $(minikube docker-env)
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
 sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/
 sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
+sh ./srcs/container-build.sh --image=mariadb-image --path=./srcs/mariadb/
 
 # deploy service
 kubectl create -f srcs/nginx/deployment.yaml
 kubectl create -f srcs/wordpress/deployment.yaml
 kubectl create -f srcs/phpmyadmin/deployment.yaml
+kubectl create -f srcs/mariadb/deployment.yaml

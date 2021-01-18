@@ -1,0 +1,43 @@
+#TODO auto create secrets for mysql password
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb-app
+  template:
+    metadata:
+      name: mariadb-pod
+      labels:
+        app: mariadb-app
+    spec:
+      containers:
+      - name: mariadb-container
+        image: mariadb-image
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 3306
+            name: mariadb
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: mysql-secrets
+            #     key: root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-loadbalancer
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+spec:
+  type: LoadBalancer
+  selector:
+    app: mariadb-app
+  ports:
+    - protocol: TCP
+      port: 3306
+      name: mariadb
