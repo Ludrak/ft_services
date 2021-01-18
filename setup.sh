@@ -6,7 +6,7 @@ then
     echo "Minikube is not installed."
     exit 1
 fi
-minikube start
+minikube start --vm-driver=virtualbox
 
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
