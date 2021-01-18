@@ -1,4 +1,4 @@
-FROM    alpine:3.12
+FROM    nginx-base-image
 LABEL	maintainer Nathan Lecaille <nlecaill@student.42lyon.fr>
 
 # update system
@@ -63,30 +63,12 @@ RUN     sed -i /etc/php7/php-fpm.d/www.conf\
 	-e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" \
 	-e "s+WWW_ROOT+${WWW_ROOT}+g"
 
-RUN set -x \
-	&& addgroup -g 82 -S www-data \
-	&& adduser -u 82 -D -S -G www-data www-data
-
-# nginx install
-RUN     apk --update --no-cache add nginx && \
-        mkdir -p /run/nginx && \
-        chown -R ${WWW_USER}:${WWW_USER} /var/lib/nginx && \
-        chown -R ${WWW_USER}:${WWW_USER} ${NGINX_ROOT} && \
-        chown -R ${WWW_USER}:${WWW_USER} /run/nginx && \
-        chmod -R 775 ${NGINX_ROOT}
-
-
 # nginx copy config
 COPY    ./config/nginx/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf
 COPY    ./config/nginx/nginx.conf /etc/nginx/nginx.conf
 
 # nginx copy default html
 COPY    ./config/nginx/index.html ${WWW_ROOT}/index.html
-
-# nginx enable server block in /etc/nginx/sites-available/
-RUN     mkdir -p /etc/nginx/sites-enabled/ && \
-        ln -s /etc/nginx/sites-available/${WWW_DOMAIN}.conf /etc/nginx/sites-enabled/ && \
-        chown -R ${WWW_USER}:${WWW_USER} /etc/nginx/sites-enabled
 
 # nginx edit config
 RUN      sed -i /etc/nginx/nginx.conf \

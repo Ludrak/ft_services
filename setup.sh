@@ -6,33 +6,55 @@ then
     echo "Minikube is not installed."
     exit 1
 fi
-minikube start --vm-driver=virtualbox
+
+driver=virtualbox
+for arg in "$@"
+do
+    if [[ "$arg" = --driver=* ]]
+    then
+        driver=$( echo "$arg" | sed "s/--driver=//g")
+        if [[ "$driver" != "docker" ]] && [[ "$driver" != "virtualbox" ]]
+        then
+            driver=virtualbox
+        fi 
+    fi
+done
+
+minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
 
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
     kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-    kubectl create -f metallb/configmap.yaml
-
+    kubectl create -f srcs/metallb/configmap.yaml
 # check if metalLB is enabled
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     minikube addons enable metallb
-    kubectl create -f metallb/configmap.yaml
+    kubectl create -f srcs/metallb/configmap.yaml
 fi
-kubectl apply -f srcs/configmap.yaml
+kubectl apply -f srcs/metallb/configmap.yaml
+sh ./srcs/config-metallb.sh --file=./srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )
-
+# delete prev wordpress
+kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )
+# delete prev phpmyadmin
 kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
+# delete prev mariadb
+kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep mariadb-loadbalancer | cut -d ' ' -f 1 )
 
 # switch docker to minikube docker
 eval $(minikube docker-env)
 
 # build docker image
+sh ./srcs/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base
+
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
 sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/
 sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
