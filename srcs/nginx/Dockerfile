@@ -1,4 +1,4 @@
-FROM	alpine
+FROM	alpine:3.12
 LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
 
 ARG     NGINX_ROOT="/var/www"
@@ -48,7 +48,7 @@ COPY    ./config/index.html ${WWW_ROOT}/index.html
 # nginx enable server block in /etc/nginx/sites-available/
 RUN     mkdir -p /etc/nginx/sites-enabled/ && \
         ln -s /etc/nginx/sites-available/${WWW_DOMAIN}.conf /etc/nginx/sites-enabled/ && \
-        chown -R ${WWW_USER}:${WWW_USER} /etc/nginx/sites-enabled 
+        chown -R ${WWW_USER}:${WWW_USER} /etc/nginx/sites-enabled
 
 # nginx edit config
 RUN     sed -i -e "s+WWW_ROOT+${WWW_ROOT}+g" -e "s+WWW_USER+${WWW_USER}+g" -e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" /etc/nginx/nginx.conf && \

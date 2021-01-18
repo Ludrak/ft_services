@@ -38,6 +38,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: phpmyadmin-loadbalancer
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
 spec:
   type: LoadBalancer
   selector:
