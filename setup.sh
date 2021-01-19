@@ -16,25 +16,14 @@ do
         if [[ "$driver" != "docker" ]] && [[ "$driver" != "virtualbox" ]]
         then
             driver=virtualbox
-        fi
+        fi 
     fi
 done
 
 minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
 
 # check if metallb addon exists
-if [[ "$(minikube addons list | grep metallb)" == "" ]]
-then
-    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-# check if metalLB is enabled
-elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
-then
-    minikube addons enable metallb
-    kubectl create -f srcs/metallb/configmap.yaml
-fi
-kubectl delete configmap -n metallb-system config
 sh ./srcs/config-metallb.sh --file=./srcs/metallb/configmap.yaml
-kubectl apply -f srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
@@ -49,10 +38,6 @@ kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' 
 kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mariadb-loadbalancer | cut -d ' ' -f 1 )
 
-
-kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )
-kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )
-
 # switch docker to minikube docker
 eval $(minikube docker-env)
 
@@ -62,9 +47,10 @@ sh ./srcs/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
 sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/
 sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
-sh ./srcs/container-build.sh --image=mysql-image --path=./srcs/mariadb/
+sh ./srcs/container-build.sh --image=mariadb-image --path=./srcs/mariadb/
 
 # deploy service
 kubectl create -f srcs/nginx/deployment.yaml
 kubectl create -f srcs/wordpress/deployment.yaml
 kubectl create -f srcs/phpmyadmin/deployment.yaml
+kubectl create -f srcs/mariadb/deployment.yaml

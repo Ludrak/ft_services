@@ -3,12 +3,6 @@ LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
 
 ENV     WP_LOCALE="en_US"
 
-#ARG     NGINX_ROOT="/var/www"
-
-#ENV     WWW_DOMAIN="wordpress"
-#ENV     WWW_USER="www-dataa"
-#ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
-
 ENV     PHP_VERSION="7"
 
 # dependencies

@@ -35,16 +35,3 @@ spec:
     - protocol: TCP
       port: 5050
       name: wordpress
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: wordpress-volume
-  labels:
-    app: wordpress-app
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi

@@ -6,12 +6,6 @@ RUN apk update
 
 ENV     WP_LOCALE="en_US"
 
-ARG     NGINX_ROOT="/var/www"
-
-ENV     WWW_DOMAIN="phpmyadmin"
-ENV     WWW_USER="www-data"
-ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
-
 ENV     PHP_VERSION="7"
 ENV     PMA_LOCATION="/usr/share/phpMyAdmin/"
 ARG     PMA_VERSION="phpMyAdmin-5.0.4-all-languages"
