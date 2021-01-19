@@ -3,7 +3,7 @@
 #
 ##  container-build.sh - lrobino
 ##  Basic build script for docker
-##  
+##
 ##  PARAMS:
 ##
 ##  --image=<image name>
