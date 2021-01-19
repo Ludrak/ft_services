@@ -16,7 +16,7 @@ do
         if [[ "$driver" != "docker" ]] && [[ "$driver" != "virtualbox" ]]
         then
             driver=virtualbox
-        fi 
+        fi
     fi
 done
 
@@ -26,25 +26,15 @@ minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry runnin
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
     kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-<<<<<<< HEAD
-=======
-    kubectl create -f srcs/metallb/configmap.yaml
->>>>>>> 3e1da334d8707015371903ff1526019cc3fe540a
 # check if metalLB is enabled
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     minikube addons enable metallb
-<<<<<<< HEAD
-fi
-kubectl delete configmap -n metallb-system config
-kubectl create -f srcs/metallb/configmap.yaml
-
-=======
     kubectl create -f srcs/metallb/configmap.yaml
 fi
-kubectl apply -f srcs/metallb/configmap.yaml
+kubectl delete configmap -n metallb-system config
 sh ./srcs/config-metallb.sh --file=./srcs/metallb/configmap.yaml
->>>>>>> 3e1da334d8707015371903ff1526019cc3fe540a
+kubectl apply -f srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
