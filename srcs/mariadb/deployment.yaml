@@ -30,14 +30,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb-loadbalancer
+  name: mariadb-service
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
 spec:
-  type: LoadBalancer
+  type: ClusterIP
+  clusterIP: 10.96.0.13
+  # type: LoadBalancer
   selector:
     app: mariadb-app
   ports:
     - protocol: TCP
       port: 3306
       name: mariadb
+

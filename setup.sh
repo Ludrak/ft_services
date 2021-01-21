@@ -6,24 +6,26 @@ then
     echo "Minikube is not installed."
     exit 1
 fi
-minikube start --vm-driver=virtualbox
+minikube start --driver=virtualbox
 
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
+
+    # kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
     kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-    sh ./srcs/metallb/create_configmap.sh
-    kubectl create -f srcs/metallb/configmap.yaml
 
 # check if metalLB is enabled
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     minikube addons enable metallb
-    sh ./srcs/metallb/create_configmap.sh
-    kubectl create -f srcs/metallb/configmap.yaml
 fi
+# sh ./srcs/metallb/create_configmap.sh
+# sh ./srcs/metallb/create_configmap.sh
 sh ./srcs/metallb/create_configmap.sh
-kubectl apply -f srcs/metallb/configmap.yaml
+kubectl delete configmap -n metallb-system config
+kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system
+# kubectl apply -f srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
@@ -33,10 +35,16 @@ kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
 
 kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
-kubectl delete svc $( kubectl get svc | grep mariadb-loadbalancer | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
+
+kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )
 
 # switch docker to minikube docker
 eval $(minikube docker-env)
+
+# kubectl apply -f srcs/metallb/configmap.yaml
+
 
 # build docker image
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
@@ -49,3 +57,8 @@ kubectl create -f srcs/nginx/deployment.yaml
 kubectl create -f srcs/wordpress/deployment.yaml
 kubectl create -f srcs/phpmyadmin/deployment.yaml
 kubectl create -f srcs/mariadb/deployment.yaml
+
+sleep 5
+
+kubectl delete configmap -n metallb-system config
+kubectl create -f srcs/metallb/configmap.yaml
