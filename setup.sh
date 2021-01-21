@@ -62,11 +62,10 @@ kubectl create -f srcs/metallb/configmap.yaml
 
 # wordpress
 #TODO add wp_key download to start of Dockerfile
-#TODO configure wp then export as wp.sql file and add it to mariadb
 
 #phpmyadmin
 #TODO add identifiant in environnement var
-
+#TODO add ssl to phpmyadmin container
 
 #then
 #TODO put passwords in secrets

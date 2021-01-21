@@ -4,8 +4,6 @@ LABEL	maintainer Nathan Lecaille <nlecaill@student.42lyon.fr>
 # update system
 RUN apk update
 
-ENV     WP_LOCALE="en_US"
-
 ARG     NGINX_ROOT="/var/www"
 
 ENV     WWW_DOMAIN="phpmyadmin"
