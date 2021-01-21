@@ -20,12 +20,9 @@ elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     minikube addons enable metallb
 fi
-# sh ./srcs/metallb/create_configmap.sh
-# sh ./srcs/metallb/create_configmap.sh
 sh ./srcs/metallb/create_configmap.sh
 kubectl delete configmap -n metallb-system config
 kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system
-# kubectl apply -f srcs/metallb/configmap.yaml
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
@@ -62,3 +59,14 @@ sleep 5
 
 kubectl delete configmap -n metallb-system config
 kubectl create -f srcs/metallb/configmap.yaml
+
+# wordpress
+#TODO add wp_key download to start of Dockerfile
+#TODO configure wp then export as wp.sql file and add it to mariadb
+
+#phpmyadmin
+#TODO add identifiant in environnement var
+
+
+#then
+#TODO put passwords in secrets

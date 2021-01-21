@@ -116,10 +116,15 @@ RUN     wget -qO /usr/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-
         chmod +x /usr/bin/wp
 
 # wordpress install
-RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE} && \
-	cp ${WWW_ROOT}/wp-config-sample.php ${WWW_ROOT}/wp-config.php && \
-        chmod -R 755 ${WWW_ROOT} && \
-        chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT}
+RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE}
+
+COPY    config/wordpress/wp-config.php  ${WWW_ROOT}/wp-config.php
+
+RUN     chmod -R 755 ${WWW_ROOT} && \
+        chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT} && \
+        wget https://wordpress.org/latest.tar.gz -P /tmp && \
+        wget -O /tmp/wp_key.txt https://api.wordpress.org/secret-key/1.1/salt/ && \
+        sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php
 
 
 EXPOSE  5050

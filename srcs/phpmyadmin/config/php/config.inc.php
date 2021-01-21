@@ -34,8 +34,8 @@ $i++;
 $cfg['Servers'][$i]['auth_type'] = 'config';
 // /* Server parameters */
 $cfg['Servers'][$i]['host'] = 'mariadb-service';
-$cfg['Servers'][$i]['user'] = 'root';
-$cfg['Servers'][$i]['password'] = 'toor';
+$cfg['Servers'][$i]['user'] = 'admin';
+$cfg['Servers'][$i]['password'] = 'adminpass';
 
 $cfg['Servers'][$i]['port'] = '3306';
 $cfg['Servers'][$i]['compress'] = false;
@@ -50,8 +50,8 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
 /* User used to manipulate with storage */
 // $cfg['Servers'][$i]['controlhost'] = '';
 // $cfg['Servers'][$i]['controlport'] = '';
-$cfg['Servers'][$i]['controluser'] = 'root';
-$cfg['Servers'][$i]['controlpass'] = 'toor';
+// $cfg['Servers'][$i]['controluser'] = 'root';
+// $cfg['Servers'][$i]['controlpass'] = 'toor';
 
 /* Storage database and tables */
 $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
