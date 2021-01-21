@@ -4,19 +4,17 @@ LABEL	maintainer Nathan Lecaille <nlecaill@student.42lyon.fr>
 # update system
 RUN apk update
 
-ENV     WP_LOCALE="en_US"
-
 ARG     NGINX_ROOT="/var/www"
 
 ENV     WWW_DOMAIN="phpmyadmin"
 ENV     WWW_USER="www-data"
-ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
+ENV     WWW_ROOT="${NGINX_ROOT}/html"
 
 ENV     PHP_VERSION="7"
 ENV     PMA_LOCATION="/usr/share/phpMyAdmin/"
 ARG     PMA_VERSION="phpMyAdmin-5.0.4-all-languages"
 
-ENV     PMA_HOST="mysql-service"
+ENV     PMA_HOST="mariadb-service"
 ENV     PMA_PORT="5000"
 ENV     PMA_USER="admin"
 ENV     PMA_PASSWORD="admin"
@@ -93,7 +91,7 @@ WORKDIR ${PMA_LOCATION}
 COPY config/php/config.inc.php .
 
 RUN echo "- Install phpmyadmin" \
-    && unzip ${PMA_VERSION}.zip -d . \
+    && unzip ${PMA_VERSION}.zip -d . 2>&1 > /dev/null \
     && mv ${PMA_VERSION}/* . \
     && rmdir ${PMA_VERSION} \
     && rm ${PMA_VERSION}.zip \

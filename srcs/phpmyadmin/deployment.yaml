@@ -22,9 +22,11 @@ spec:
         ports:
           - containerPort: 80
             name: phpmyadmin
+          - containerPort: 3306
+            name: phpdatabase
         env:
           - name: PMA_HOST
-            value: mysql-service
+            value: mariadb-service
           - name: PMA_PORT
             value: "3306"
           - name: MYSQL_ROOT_PASSWORD

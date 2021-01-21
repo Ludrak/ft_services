@@ -1,0 +1,10 @@
+USE mysql;
+GRANT ALL ON *.* TO 'root'@'%' identified by 'toor' WITH GRANT OPTION ;
+GRANT ALL ON *.* TO 'root'@'localhost' identified by 'toor' WITH GRANT OPTION ;
+SET PASSWORD FOR 'root'@'localhost'=PASSWORD('toor') ;
+DROP DATABASE IF EXISTS test ;
+CREATE USER admin@`%` IDENTIFIED BY 'adminpass';
+FLUSH PRIVILEGES ;
+-- create database phpmyadmin;
+-- GRANT all privileges on phpmyadmin.* to mysql@localhost;
+-- FLUSH privileges;
