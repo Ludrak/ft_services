@@ -20,8 +20,8 @@ spec:
         ports:
         - containerPort: 5050
           name: wordpress
-        - containerPort: 3306
-          name: mariadb
+        - containerPort: 3307
+          name: wpdb
 ---
 apiVersion: v1
 kind: Service
@@ -38,5 +38,5 @@ spec:
       port: 5050
       name: wordpress
     - protocol: TCP
-      port: 3306
-      name: mariadb
+      port: 3307
+      name: wpdb
