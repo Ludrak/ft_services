@@ -29,12 +29,12 @@ spec:
             #     name: mysql-secrets
             #     key: root-password
         volumeMounts:
-        - name: secret-volume
-          mountPath: /etc/secret-volume
+        - name: phpmyadmin-secret-volume
+          mountPath: /etc/kub/secret-volume
       volumes:
-      - name: secret-volume
+      - name: phpmyadmin-secret-volume
         secret:
-          secretName: mariadb-secret
+          secretName: phpmyadmin-secret
 ---
 apiVersion: v1
 kind: Service

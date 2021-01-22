@@ -6,18 +6,7 @@ ENV     MYSQL_DATADIR="/var/lib/mysql"
 ENV     MYSQL_DATABASE="mysql-db"
 ENV     MYSQL_CHARSET="utf8"
 ENV     MYSQL_COLLATION="utf8_general_ci"
-
-# secrets
 ENV     MYSQL_USER="mysql"
-ENV     MYSQL_PASSWORD="420lemon"
-ENV     MYSQL_ROOT_PASSWORD="toor"
-
-ENV     PMA_USER="pma-user"
-ENV     PMA_PASS="x?JD?SqmdD"
-
-ENV     WP_DB="wordpressdb"
-ENV     WP_USER="wp-user"
-ENV     WP_PASS="CKsKsqslMF"
 
 # dependencies
 RUN     apk --update --no-cache add bash wget util-linux openrc \

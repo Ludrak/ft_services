@@ -26,6 +26,13 @@ spec:
             #   secretKeyRef:
             #     name: mysql-secrets
             #     key: root-password
+        volumeMounts:
+        - name: mariadb-secret-volume
+          mountPath: /etc/kub/secret-volume
+      volumes:
+      - name: mariadb-secret-volume
+        secret:
+          secretName: mariadb-secret
 ---
 apiVersion: v1
 kind: Service

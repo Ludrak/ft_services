@@ -37,11 +37,16 @@ kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
 kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )
 
+# delete prev secrets
+kubectl delete secret mariadb-secret
+kubectl delete secret phpmyadmin-secret
+
 # switch docker to minikube docker
 eval $(minikube docker-env)
 
 # Create secrets
 kubectl apply -f configs/mariadb-secret.yaml 
+kubectl apply -f configs/phpmyadmin-secret.yaml 
 
 # build docker image
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
@@ -56,16 +61,6 @@ kubectl create -f srcs/phpmyadmin/deployment.yaml
 kubectl create -f srcs/mariadb/deployment.yaml
 
 sleep 5
-
 kubectl delete configmap -n metallb-system config
+sleep 5
 kubectl create -f srcs/metallb/configmap.yaml
-
-# wordpress
-#TODO add wp_key download to start of Dockerfile
-
-#phpmyadmin
-#TODO add identifiant in environnement var
-#TODO add ssl to phpmyadmin container
-
-#then
-#TODO put passwords in secrets
