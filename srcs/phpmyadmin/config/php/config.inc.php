@@ -34,8 +34,8 @@ $i++;
 $cfg['Servers'][$i]['auth_type'] = 'config';
 // /* Server parameters */
 $cfg['Servers'][$i]['host'] = 'mariadb-service';
-$cfg['Servers'][$i]['user'] = 'admin';
-$cfg['Servers'][$i]['password'] = 'adminpass';
+$cfg['Servers'][$i]['user'] = '';
+$cfg['Servers'][$i]['password'] = '';
 
 $cfg['Servers'][$i]['port'] = '3306';
 $cfg['Servers'][$i]['compress'] = false;

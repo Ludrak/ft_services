@@ -14,10 +14,6 @@ ENV     PHP_VERSION="7"
 ENV     PMA_LOCATION="/usr/share/phpMyAdmin/"
 ARG     PMA_VERSION="phpMyAdmin-5.0.4-all-languages"
 
-ENV     PMA_HOST="mariadb-service"
-ENV     PMA_PORT="5000"
-ENV     PMA_USER="admin"
-ENV     PMA_PASSWORD="admin"
 # php install
 RUN     apk --update --no-cache add \
         php${PHP_VERSION} \
@@ -106,7 +102,8 @@ COPY config/${PMA_VERSION}.zip ${PMA_LOCATION}
 
 WORKDIR ${PMA_LOCATION}
 
-COPY config/php/config.inc.php .
+COPY config/php/config.inc.php  .
+COPY config/php/config.sh       /
 
 RUN echo "- Install phpmyadmin" \
     && unzip ${PMA_VERSION}.zip -d . 2>&1 > /dev/null \
@@ -116,8 +113,7 @@ RUN echo "- Install phpmyadmin" \
     && ln -s ${PMA_LOCATION} ${WWW_ROOT}/phpmyadmin \
     && chown -R www-data:www-data ${WWW_ROOT}/phpmyadmin \
     && mkdir -p ${WWW_ROOT}/phpmyadmin/tmp \
-    && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp \
-    && sed -i "s~\$cfg\['blowfish_secret'\] = '';~\$cfg\['blowfish_secret'\] = 'STRINGOFTHIRTYTWORANDOMCHARACTERS';~g" ${PMA_LOCATION}/config.inc.php
+    && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp
 
 #RUN echo "- configure SSL"\
  #   && openssl req -nodes -newkey rsa:2048 -sha256 -keyout /app/ssl/private.key -out /app/ssl/server.csr -subj "/C=FR/ST=69/L=Lyon/O=LECAILLE NATHAN/CN=Localhost" \
@@ -126,5 +122,5 @@ RUN echo "- Install phpmyadmin" \
 
 EXPOSE  5000
 
-CMD     php-fpm7 && nginx
+CMD     sh /config.sh && php-fpm7 && nginx
 

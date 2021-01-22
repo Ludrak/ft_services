@@ -40,8 +40,8 @@ kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' '
 # switch docker to minikube docker
 eval $(minikube docker-env)
 
-# kubectl apply -f srcs/metallb/configmap.yaml
-
+# Create secrets
+kubectl apply -f configs/mariadb-secret.yaml 
 
 # build docker image
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/
