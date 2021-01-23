@@ -6,6 +6,10 @@ then
 eval $(minikube docker-env)
 kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
+
+kubectl delete secret phpmyadmin-secret
+kubectl apply -f configs/phpmyadmin-secret.yaml 
+
 sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
 kubectl create -f srcs/phpmyadmin/deployment.yaml
 minikube dashboard
@@ -16,6 +20,10 @@ then
 eval $(minikube docker-env)
 kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
+
+kubectl delete secret mariadb-secret
+kubectl apply -f configs/mariadb-secret.yaml 
+
 sh ./srcs/container-build.sh --image=mariadb-image --path=./srcs/mariadb/
 kubectl create -f srcs/mariadb/deployment.yaml
 minikube dashboard

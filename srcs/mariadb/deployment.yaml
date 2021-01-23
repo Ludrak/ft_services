@@ -22,10 +22,6 @@ spec:
         ports:
           - containerPort: 3306
             name: mariadb
-            # valueFrom:
-            #   secretKeyRef:
-            #     name: mysql-secrets
-            #     key: root-password
         volumeMounts:
         - name: mariadb-secret-volume
           mountPath: /etc/kub/secret-volume
@@ -41,7 +37,6 @@ metadata:
 spec:
   type: ClusterIP
   clusterIP: 10.96.0.13
-  # type: LoadBalancer
   selector:
     app: mariadb-app
   ports:

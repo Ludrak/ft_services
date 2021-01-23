@@ -43,12 +43,18 @@ Our secrets are stored in ./configs
 
 ## Commandes utiles:
 - get container logs   
-    kubectl logs  >pod<   > logs
+    `kubectl logs  >pod<   > logs`
 
 - get into a container    
-    kubectl exec -ti >pod< sh
+    `kubectl exec -ti >pod< sh`
+
+- delete/create metallb config
+    `kubectl delete configmap -n metallb-system config`
+    `kubectl create -f srcs/metallb/configmap.yaml`
 
 ### TODO List
-TODO Crée volume pour mariadb
-TODO Crée volume pour InfluxDB
-TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services
+TODO Crée volume pour mariadb    
+TODO Crée volume pour InfluxDB    
+TODO Container-build.sh: add a single output ligne when image finish to create     
+TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
+TODO Add a kubectl wait to each pods deletion/creation

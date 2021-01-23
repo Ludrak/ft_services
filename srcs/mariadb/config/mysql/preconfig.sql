@@ -1,10 +1,7 @@
 USE mysql;
-GRANT ALL ON *.* TO 'XuserX'@'%' identified by 'toor' WITH GRANT OPTION ;
-GRANT ALL ON *.* TO 'XuserX'@'localhost' identified by 'toor' WITH GRANT OPTION ;
-SET PASSWORD FOR 'XuserX'@'localhost'=PASSWORD('toor') ;
+GRANT ALL ON *.* TO 'XrootX'@'%' identified by 'XrootpassX' WITH GRANT OPTION ;
+GRANT ALL ON *.* TO 'XrootX'@'localhost' identified by 'XrootpassX' WITH GRANT OPTION ;
+SET PASSWORD FOR 'XrootX'@'localhost'=PASSWORD('XrootpassX') ;
 DROP DATABASE IF EXISTS test ;
-CREATE USER admin@`%` IDENTIFIED BY 'adminpass';
+CREATE USER 'XadminX'@`%` IDENTIFIED BY 'XadminpassX';
 FLUSH PRIVILEGES ;
--- create database phpmyadmin;
--- GRANT all privileges on phpmyadmin.* to mysql@localhost;
--- FLUSH privileges;

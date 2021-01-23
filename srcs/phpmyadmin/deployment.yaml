@@ -24,10 +24,6 @@ spec:
             name: phpmyadmin
           - containerPort: 3306
             name: phpdatabase
-            # valueFrom:
-            #   secretKeyRef:
-            #     name: mysql-secrets
-            #     key: root-password
         volumeMounts:
         - name: phpmyadmin-secret-volume
           mountPath: /etc/kub/secret-volume

@@ -115,11 +115,6 @@ RUN echo "- Install phpmyadmin" \
     && mkdir -p ${WWW_ROOT}/phpmyadmin/tmp \
     && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp
 
-#RUN echo "- configure SSL"\
- #   && openssl req -nodes -newkey rsa:2048 -sha256 -keyout /app/ssl/private.key -out /app/ssl/server.csr -subj "/C=FR/ST=69/L=Lyon/O=LECAILLE NATHAN/CN=Localhost" \
- #   && openssl x509 -req -days 365 -in /app/ssl/server.csr -signkey /app/ssl/private.key -out /app/ssl/server.crt \ 
-  #  && nginx -t \
-
 EXPOSE  5000
 
 CMD     sh /config.sh && php-fpm7 && nginx
