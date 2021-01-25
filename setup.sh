@@ -14,8 +14,22 @@ then
     echo -e "${RED}Minikube is not installed.${RESET}"
     exit 1
 fi
+
 echo -e "${GREEN}Starting ${CYAN}MINIKUBE${RESET}"
-minikube start --driver=virtualbox                                                              > setup.log
+driver=virtualbox
+for arg in "$@"
+do
+    if [[ "$arg" = --driver=* ]]
+    then
+        driver=$( echo "$arg" | sed "s/--driver=//g")
+        if [[ "$driver" != "docker" ]] && [[ "$driver" != "virtualbox" ]]
+        then
+            driver=virtualbox
+        fi
+    fi
+done
+
+minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
 
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
@@ -69,6 +83,8 @@ kubectl apply -f configs/phpmyadmin-secret.yaml
 
 # build docker image
 echo -e "${GREEN}Creating docker images.${RESET}"
+sh ./srcs/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base                  >> setup.log
+
 sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/                           >> setup.log
 sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/                   >> setup.log
 sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/                 >> setup.log

@@ -1,6 +1,7 @@
 # FT_SERVICES
 
 42school 2019 curriculum project consisting in automating the deployment and configuration of 5 servers with 2 databases and 1 loadbalancer.
+by Nlecaill, Lrobino, Abourbou and Musoufi
 
 # servers
 Each server is deployed on a different pod.

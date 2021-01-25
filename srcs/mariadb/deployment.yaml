@@ -1,5 +1,16 @@
-#TODO auto create secrets for mysql password
-
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mysql-pv-claim
+#   labels:
+#     app: wordpress
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 20Gi
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,6 +40,17 @@ spec:
       - name: mariadb-secret-volume
         secret:
           secretName: mariadb-secret
+        # volumeMounts:
+        # - name: mysql-persistent-storage
+        #   mountPath: /var/lib/mysql
+        # volumes:
+        # - name: mysql-persistent-storage
+        #   persistentVolumeClaim:
+        #     claimName: mysql-pv-claim
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: mysql-secrets
+            #     key: root-password
 ---
 apiVersion: v1
 kind: Service

@@ -40,3 +40,16 @@ spec:
     - protocol: TCP
       port: 3307
       name: wpdb
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: wordpress-volume
+#   labels:
+#     app: wordpress-app
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 20Gi
