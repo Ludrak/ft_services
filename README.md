@@ -1,8 +1,10 @@
 # FT_SERVICES
 
-Projet du cursus 2019 de l'école 42 consistant à automatiser le déploiement et la configuration de 5 serveurs avec 2 bases de données et 1 loadbalancer.
+42school 2019 curriculum project consisting in automating the deployment and configuration of 5 servers with 2 databases and 1 loadbalancer.
 
-# serveurs
+# servers
+Each server is deployed on a different pod.
+
 ## Grafana
 ## Nginx
 
@@ -41,7 +43,7 @@ Our secrets are stored in ./configs
 - mariadb-secret
 - phpmyadmin-secret
 
-## Commandes utiles:
+## Usefull commands:
 - get container logs   
     `kubectl logs  >pod<   > logs`
 
@@ -53,8 +55,10 @@ Our secrets are stored in ./configs
     `kubectl create -f srcs/metallb/configmap.yaml`
 
 ### TODO List
-TODO Crée volume pour mariadb    
-TODO Crée volume pour InfluxDB    
+TODO Add a command line for auto install wordpress plugins 
+TODO Create volume for mariadb    
+TODO Create volume for InfluxDB    
 TODO Container-build.sh: add a single output ligne when image finish to create     
 TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
-TODO Add a kubectl wait to each pods deletion/creation
+TODO Add a kubectl wait to each pods deletion/creation    
+TODO Put configs folder in srcs

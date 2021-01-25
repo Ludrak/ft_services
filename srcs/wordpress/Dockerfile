@@ -120,11 +120,15 @@ RUN     wget -qO /usr/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-
 # wordpress install
 RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE}
 
+# configure wordpress
 COPY    config/wordpress/wp-config.php  ${WWW_ROOT}/wp-config.php
 
 RUN     chmod -R 755 ${WWW_ROOT} && \
         chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT} && \
         sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php
+
+#install wordpress plug-in
+RUN     wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 
 
 EXPOSE  5050

@@ -22,7 +22,9 @@ if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
     echo -e "${CYAN}METALLB${GREEN} not found as minikube addon.${RESET}"
     echo -e "${GREEN}Installing ${CYAN}metallb${GREEN} from sources.${RESET}"
-    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml >> setup.log
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml >> setup.log
+    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.9.3/manifests/metallb.yaml >> setup.log
+    $ kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 # check if metalLB is enabled
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
@@ -32,21 +34,21 @@ then
 fi
 echo -e "${GREEN}Configure ${CYAN}metallb${GREEN} configmap.${RESET}"
 sh ./srcs/metallb/create_configmap.sh
-kubectl delete configmap -n metallb-system config                                               >> setup.log
-kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system       >> setup.log
+# kubectl delete configmap -n metallb-system config                                               >> setup.log
+# kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system       >> setup.log
 
 # delete prev nginx
 echo -e "${GREEN}Deleting existant deployments and services${RESET}"
-echo "- Delete ${YELLOW}NGINX${RESET}"
+echo -e "- Delete ${YELLOW}NGINX${RESET}"
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )                    2>&1 >> setup.log
 kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )             2>&1 >> setup.log
-echo "- Delete ${YELLOW}PHPMYADMIN${RESET}"
+echo -e "- Delete ${YELLOW}PHPMYADMIN${RESET}"
 kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )               2>&1 >> setup.log
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )        2>&1 >> setup.log
-echo "- Delete ${YELLOW}MARIADB${RESET}"
+echo -e "- Delete ${YELLOW}MARIADB${RESET}"
 kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )                  2>&1 >> setup.log
 kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )                2>&1 >> setup.log
-echo "- Delete ${YELLOW}WORDPRESS${RESET}"
+echo -e "- Delete ${YELLOW}WORDPRESS${RESET}"
 kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )                2>&1 >> setup.log
 kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )         2>&1 >> setup.log
 
@@ -58,6 +60,7 @@ kubectl delete secret phpmyadmin-secret
 # switch docker to minikube docker
 echo -e "${GREEN}Switching ${CYAN}docker${GREEN} environnement${RESET}"
 eval $(minikube docker-env)
+
 
 # Create secrets
 echo -e "${GREEN}Creating new secrets${RESET}"
@@ -73,10 +76,16 @@ sh ./srcs/container-build.sh --image=mariadb-image --path=./srcs/mariadb/       
 
 # deploy service
 echo -e "${GREEN}Creating deployments${RESET}"
-kubectl create -f srcs/nginx/deployment.yaml
-kubectl create -f srcs/wordpress/deployment.yaml
-kubectl create -f srcs/phpmyadmin/deployment.yaml
+
 kubectl create -f srcs/mariadb/deployment.yaml
+kubectl wait --for=condition=Available deployment/mariadb
+kubectl create -f srcs/wordpress/deployment.yaml
+kubectl wait --for=condition=Available deployment/wordpress
+kubectl create -f srcs/nginx/deployment.yaml
+kubectl wait --for=condition=Available deployment/nginx
+kubectl create -f srcs/phpmyadmin/deployment.yaml
+kubectl wait --for=condition=Available deployment/phpmyadmin
+
 
 echo -e "${GREEN}Configure metallb configmap${RESET}"
 sleep 5
