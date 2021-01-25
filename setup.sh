@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # check if minikube is installed
-if [[ "$(minikube version | grep "minikube version:")" == "" ]]
+if [[ "$(minikube version | grep 'minikube version:')" == "" ]]
 then
     echo "Minikube is not installed."
     exit 1
@@ -20,10 +20,15 @@ do
     fi
 done
 
-minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
+if [[ "$( minikube status | grep "host: Running" )" = "" ]]
+then
+    minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
+else
+    echo "Minikube is already started"
+fi
 
-# check if metallb addon exists
-sh ./srcs/config-metallb.sh --file=./srcs/metallb/configmap.yaml
+# switch docker to minikube docker
+eval $(minikube docker-env)
 
 # delete prev nginx
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
@@ -38,9 +43,6 @@ kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' 
 kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mariadb-loadbalancer | cut -d ' ' -f 1 )
 
-# switch docker to minikube docker
-eval $(minikube docker-env)
-
 # build docker image
 sh ./srcs/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base
 
@@ -54,3 +56,8 @@ kubectl create -f srcs/nginx/deployment.yaml
 kubectl create -f srcs/wordpress/deployment.yaml
 kubectl create -f srcs/phpmyadmin/deployment.yaml
 kubectl create -f srcs/mariadb/deployment.yaml
+
+# configure metallb
+sleep 5
+kubectl delete configmap -n metallb-system config
+sh ./srcs/config-metallb.sh --file=./srcs/metallb/configmap.yaml

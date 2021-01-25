@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# define start and end for the ip plage
-start="240"
-end="250"
+# define max number of ip that you need to allow
+ip_count="127"
 
 #config file to write to
 config_file="srcs/metallb/configmap.yaml"
 
-ipbase=$( minikube ip | cut -d. -f-3 )
-range="$ipbase.$start-$ipbase.$end"
+ip_start=$( echo $(minikube ip | cut -d. -f-3).$(expr $(minikube ip | cut -d. -f4) + 1) )
+ip_end=$( echo $(minikube ip | cut -d. -f-3).$(expr $(minikube ip | cut -d. -f4) + 1 + $ip_count) )
+range="$ip_start-$ip_end"
 
 #config file
 config=$(echo "
@@ -36,17 +36,21 @@ do
     fi
 done
 
+#check if metalLB is enabled
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-   kubectl create -f $config_file
-check if metalLB is enabled
+   echo "$config" > $config_file
+   kubectl create configmap config --from-file=$config_file -n metallb-system
+   #kubectl create -f $config_file
 elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
    minikube addons enable metallb
-   kubectl create -f $config_file
+   echo "$config" > $config_file
+   kubectl create configmap config --from-file=$config_file -n metallb-system
 fi
 echo "$config" > $config_file
 kubectl apply -f $config_file || echo $prefix "Cannot apply config" && exit 1
+kubectl create -f $config_file
 
 echo $prefix "metallb -> Applied config"
