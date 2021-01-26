@@ -100,5 +100,4 @@ RUN echo "- Install phpmyadmin" \
 
 EXPOSE  5000
 
-CMD     sh /config.sh && php-fpm7 && nginx
-
+ENTRYPOINT [ "/bin/bash", "/config.sh" ]

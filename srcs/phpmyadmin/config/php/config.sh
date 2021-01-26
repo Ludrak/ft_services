@@ -6,3 +6,6 @@ sed -i "s~\$cfg\['Servers'\]\[\$i\]\['password'\] = '';~\$cfg\['Servers'\]\[\$i\
 
 # REVIEW uncomment this for production
 # chmod 000 /etc/kub
+
+# start nginx and php servers
+php-fpm7 && nginx
