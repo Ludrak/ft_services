@@ -80,15 +80,15 @@ MAYBE change nginx location in container filesystem
 TODO https: ssl error when reach wordpress on port 443
 TODO Faire page d'acceuil pour le server nginx
 
--- phpmyadmin
-BUG Connection a phpmyadmin sans droit de création de tables
+-- phpmyadmin    
+BUG Connect to phpmyadmin without tables creation's right.    
 
--- wordpress
-BUG Error SSL protocol.
-when:
-- open wordpress
-- open pma
-- modif wp table in pma and save
-- can't go on wp (redirect to nginx)
-supposition:
-Some ssl key are not valid (maybe browser don't support two identical key)
+-- wordpress    
+BUG Error SSL protocol:    
+when:     
+- open wordpress.    
+- open pma.  
+- modif wp table in pma and save.   
+- can't go on wp (redirect to nginx).   
+supposition:     
+Some ssl key are not valid (maybe browser don't support two identical key).    
