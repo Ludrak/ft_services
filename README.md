@@ -3,13 +3,22 @@
 42school 2019 curriculum project consisting in automating the deployment and configuration of 5 servers with 2 databases and 1 loadbalancer.
 by Nlecaill, Lrobino, Abourbou and Musoufi
 
+# Build && run project
+
+You can launch everything by running: `bash setup.sh`.    
+You can choose your driver with: `bash setup.sh --driver="docker|virtualbox"`
+
+Once project is build, you can find log in `setup.log` and connect to dashboard with: `minikube dashboard`.
+
 # servers
 Each server is deployed on a different pod.
 
 ## Grafana
+Grafana is an ...
+
 ## Nginx
 
-An Nginx server that can make a redirection 403 on wordpress and a ... .
+An Nginx server that can make a redirection 403 on wordpress and a reverse proxy redirection on phpmyadmins.
 
 ## Wordpress
 Wordpress ID:       admin    
@@ -63,3 +72,10 @@ TODO Container-build.sh: add a single output ligne when image finish to create
 TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
 TODO Add a kubectl wait to each pods deletion/creation    
 TODO Put configs folder in srcs
+TODO add a kustomize.yaml
+
+
+-- nginx   
+MAYBE change nginx location in container filesystem
+TODO https: ssl error when reach wordpress on port 443
+TODO Faire page d'acceuil pour le server nginx

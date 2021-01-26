@@ -5,9 +5,9 @@ ENV     WP_LOCALE="en_US"
 
 #ARG     NGINX_ROOT="/var/www"
 
-#ENV     WWW_DOMAIN="wordpress"
-#ENV     WWW_USER="www-dataa"
-#ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
+# ENV     WWW_DOMAIN="wordpress"
+# ENV     WWW_USER="www-dataa"
+# ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
 
 ENV     PHP_VERSION="7"
 
@@ -102,16 +102,15 @@ RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE}
 
 # configure wordpress
 COPY    config/wordpress/wp-config.php  ${WWW_ROOT}/wp-config.php
+COPY    config/wordpress/startwp.sh     /scripts/
 
 RUN     chmod -R 755 ${WWW_ROOT} && \
         chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT} && \
         sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php
 
-#install wordpress plug-in
-RUN     wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 
 
 EXPOSE  5050
 
 
-CMD     php-fpm7 && nginx
+ENTRYPOINT ["/bin/bash", "/scripts/startwp.sh"]

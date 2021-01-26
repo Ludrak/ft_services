@@ -4,11 +4,12 @@ LABEL	maintainer Nathan Lecaille <nlecaill@student.42lyon.fr>
 # update system
 RUN apk update
 
-ARG     NGINX_ROOT="/var/www"
+# ARG     NGINX_ROOT="/var/www"
 
-ENV     WWW_DOMAIN="phpmyadmin"
-ENV     WWW_USER="www-data"
-ENV     WWW_ROOT="${NGINX_ROOT}/html"
+# ENV     WWW_DOMAIN="phpmyadmin"
+# ENV     WWW_USER="www-data"
+# ENV     WWW_ROOT="${NGINX_ROOT}/html"
+# ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
 
 ENV     PHP_VERSION="7"
 ENV     PMA_LOCATION="/usr/share/phpMyAdmin/"
