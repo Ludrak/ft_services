@@ -106,7 +106,8 @@ COPY    config/wordpress/startwp.sh     /scripts/
 
 RUN     chmod -R 755 ${WWW_ROOT} && \
         chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT} && \
-        sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php
+        sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php \
+        && chmod +x /scripts/startwp.sh
 
 
 

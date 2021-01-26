@@ -96,7 +96,8 @@ RUN echo "- Install phpmyadmin" \
     && ln -s ${PMA_LOCATION} ${WWW_ROOT}/phpmyadmin \
     && chown -R www-data:www-data ${WWW_ROOT}/phpmyadmin \
     && mkdir -p ${WWW_ROOT}/phpmyadmin/tmp \
-    && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp
+    && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp \
+    && chmod +x /config.sh
 
 EXPOSE  5000
 

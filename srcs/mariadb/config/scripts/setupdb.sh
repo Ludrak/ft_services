@@ -1,10 +1,12 @@
+#! /bin/bash
+
 set -e
 
 #Start mysqld
 /usr/bin/mysqld --datadir=/var/lib/mysql --user=mysql & 
 
 # Wait until mysqld is ready
-sh  /scripts/wait_mysqld_starting.sh
+/scripts/wait_mysqld_starting.sh
 
 # Once mysqld is started, configure all sql files with good identifiants
 sed -i "s~XrootX~$(cat /etc/kub/secret-volume/rootuser)~g" /sql/preconfig.sql

@@ -1,3 +1,4 @@
+#! /bin/bash
 
 # start nginx and php server
 php-fpm7 && nginx
