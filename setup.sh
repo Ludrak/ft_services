@@ -30,7 +30,7 @@ do
 done
 
 minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
-minikube addons disable metallb
+# minikube addons disable metallb
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
@@ -45,14 +45,14 @@ elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     echo -e "${GREEN}Activing ${CYAN}metallb${GREEN} addon.${RESET}"
     minikube addons enable metallb
-    echo -e "${GREEN}Configure ${CYAN}metallb${GREEN} configmap.${RESET}"
-    sh ./srcs/metallb/create_configmap.sh
-    kubectl delete configmap -n metallb-system config                                               >> setup.log
-    kubectl create -f srcs/metallb/configmap.yaml                                                   >> setup.log
+    # kubectl delete configmap -n metallb-system config                                               >> setup.log
+    # kubectl create -f srcs/metallb/configmap.yaml                                                   >> setup.log
 
 fi
 # kubectl delete configmap -n metallb-system config                                               >> setup.log
 # kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system       >> setup.log
+echo -e "${GREEN}Create ${CYAN}metallb${GREEN} configmap.${RESET}"
+sh ./srcs/metallb/create_configmap.sh
 
 # delete prev nginx
 echo -e "${GREEN}Deleting existant deployments and services${RESET}"
@@ -82,17 +82,17 @@ eval $(minikube docker-env)
 
 # Create secrets
 echo -e "${GREEN}Creating new secrets${RESET}"
-kubectl apply -f configs/mariadb-secret.yaml
-kubectl apply -f configs/phpmyadmin-secret.yaml
+kubectl apply -f srcs/configs/mariadb-secret.yaml
+kubectl apply -f srcs/configs/phpmyadmin-secret.yaml
 
 # build docker image
 echo -e "${GREEN}Creating docker images.${RESET}"
-sh ./srcs/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base                  >> setup.log
+sh ./srcs/scripts/container-build.sh --image=nginx-base-image --path=./srcs/nginx-base                  >> setup.log
 
-sh ./srcs/container-build.sh --image=nginx-image --path=./srcs/nginx/                           >> setup.log
-sh ./srcs/container-build.sh --image=wordpress-image --path=./srcs/wordpress/                   >> setup.log
-sh ./srcs/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/                 >> setup.log
-sh ./srcs/container-build.sh --image=mariadb-image --path=./srcs/mariadb/                       >> setup.log
+sh ./srcs/scripts/container-build.sh --image=nginx-image --path=./srcs/nginx/                           >> setup.log
+sh ./srcs/scripts/container-build.sh --image=wordpress-image --path=./srcs/wordpress/                   >> setup.log
+sh ./srcs/scripts/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/                 >> setup.log
+sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/mariadb/                       >> setup.log
 
 # deploy service
 echo -e "${GREEN}Creating deployments${RESET}"
@@ -108,4 +108,4 @@ kubectl wait --for=condition=Available deployment/phpmyadmin
 
 
 echo -e "${GREEN}Configure metallb configmap${RESET}"
-./configMetalLB.sh
+./srcs/scripts/configMetalLB.sh

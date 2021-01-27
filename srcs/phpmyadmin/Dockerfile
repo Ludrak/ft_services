@@ -86,7 +86,7 @@ COPY config/${PMA_VERSION}.zip ${PMA_LOCATION}
 WORKDIR ${PMA_LOCATION}
 
 COPY config/php/config.inc.php  .
-COPY config/php/config.sh       /
+COPY config/php/setupPma.sh       /
 
 RUN echo "- Install phpmyadmin" \
     && unzip ${PMA_VERSION}.zip -d . 2>&1 > /dev/null \
@@ -97,8 +97,8 @@ RUN echo "- Install phpmyadmin" \
     && chown -R www-data:www-data ${WWW_ROOT}/phpmyadmin \
     && mkdir -p ${WWW_ROOT}/phpmyadmin/tmp \
     && chown -RH www-data:www-data ${WWW_ROOT}/phpmyadmin/tmp \
-    && chmod +x /config.sh
+    && chmod +x /setupPma.sh
 
 EXPOSE  5000
 
-ENTRYPOINT [ "/bin/bash", "/config.sh" ]
+ENTRYPOINT [ "/bin/bash", "/setupPma.sh" ]

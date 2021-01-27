@@ -102,16 +102,16 @@ RUN     wp --path=${WWW_ROOT} core download --locale=${WP_LOCALE}
 
 # configure wordpress
 COPY    config/wordpress/wp-config.php  ${WWW_ROOT}/wp-config.php
-COPY    config/wordpress/startwp.sh     /scripts/
+COPY    config/wordpress/setupWp.sh     /scripts/
 
 RUN     chmod -R 755 ${WWW_ROOT} && \
         chown -R ${WWW_USER}:${WWW_USER} ${WWW_ROOT} && \
         sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php \
-        && chmod +x /scripts/startwp.sh
+        && chmod +x /scripts/setupWp.sh
 
 
 
 EXPOSE  5050
 
 
-ENTRYPOINT ["/bin/bash", "/scripts/startwp.sh"]
+ENTRYPOINT ["/bin/bash", "/scripts/setupWp.sh"]

@@ -53,6 +53,13 @@ Our secrets are stored in ./configs
 - mariadb-secret
 - phpmyadmin-secret
 
+## Scripts
+
+- secret_encrypt.sh: Script thats contain all passwords and print their Base64-encrypt version.
+- container-build: Script thats create images from a path to dockerfile.     
+- setupdebug: recreate and deploy a service pass in param. (wp, maria, pma).
+- configMetalLB: Extention of setup.sh, allow to safely apply a new metallb configmap.
+
 ## Usefull commands:
 - get container logs   
     `kubectl logs  >pod<   > logs`
@@ -69,9 +76,9 @@ TODO Add a command line for auto install wordpress plugins
 TODO Create volume for mariadb    
 TODO Create volume for InfluxDB    
 TODO Container-build.sh: add a single output ligne when image finish to create     
-TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
+DONE Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
 TODO Add a kubectl wait to each pods deletion/creation    
-TODO Put configs folder in srcs
+DONE Put configs folder in srcs
 TODO add a kustomize.yaml
 TODO add docker images creation log     
 TODO change pma inside position      
@@ -85,6 +92,7 @@ TODO Faire page d'acceuil pour le server nginx
 BUG Connect to phpmyadmin without tables creation's right.    
 
 -- wordpress    
+TODO add wp pluggin 
 BUG Error SSL protocol:    
 when:     
 - open wordpress.    
