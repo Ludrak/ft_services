@@ -2,11 +2,11 @@ FROM	nginx-base-image
 
 LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
 
-ARG     NGINX_ROOT="/var/www"
+# ARG     NGINX_ROOT="/var/www"
 
-ENV     WWW_DOMAIN="localhost"
-ENV     WWW_USER="www-data"
-ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
+# ENV     WWW_DOMAIN="localhost"
+# ENV     WWW_USER="www-data"
+# ENV     WWW_ROOT="${NGINX_ROOT}/${WWW_DOMAIN}/html"
 
 # nginx copy config
 COPY    ./config/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf

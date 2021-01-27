@@ -61,7 +61,8 @@ RUN     sed -i /etc/php7/php-fpm.d/www.conf\
 # nginx copy config
 COPY    ./config/nginx/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf
 COPY    ./config/nginx/nginx.conf /etc/nginx/nginx.conf
-
+# TODO check if nginx.conf is modified since nginx-base.conf
+ 
 # nginx copy default html
 COPY    ./config/nginx/index.html ${WWW_ROOT}/index.html
 

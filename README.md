@@ -57,7 +57,7 @@ Our secrets are stored in ./configs
 
 - secret_encrypt.sh: Script thats contain all passwords and print their Base64-encrypt version.
 - container-build: Script thats create images from a path to dockerfile.     
-- setupdebug: recreate and deploy a service pass in param. (wp, maria, pma).
+- setupdebug: recreate and deploy a service pass in param. (wp, maria, php, nginx).
 - configMetalLB: Extention of setup.sh, allow to safely apply a new metallb configmap.
 
 ## Usefull commands:

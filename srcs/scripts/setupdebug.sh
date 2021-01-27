@@ -38,3 +38,13 @@ sh ./srcs/scripts/container-build.sh --image=wordpress-image --path=./srcs/wordp
 kubectl create -f srcs/wordpress/deployment.yaml
 minikube dashboard
 fi
+
+if [ $1 = "nginx" ]
+then
+eval $(minikube docker-env)
+kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )
+sh ./srcs/scripts/container-build.sh --image=nginx-image --path=./srcs/nginx/
+kubectl create -f srcs/nginx/deployment.yaml
+minikube dashboard
+fi
