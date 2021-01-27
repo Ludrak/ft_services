@@ -73,12 +73,13 @@ TODO Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on ser
 TODO Add a kubectl wait to each pods deletion/creation    
 TODO Put configs folder in srcs
 TODO add a kustomize.yaml
-
+TODO add docker images creation log     
+TODO change pma inside position      
 
 -- nginx   
-MAYBE change nginx location in container filesystem
-TODO https: ssl error when reach wordpress on port 443
-TODO Faire page d'acceuil pour le server nginx
+MAYBE change nginx location in container filesystem     
+TODO https: ssl error when reach wordpress on port 443     
+TODO Faire page d'acceuil pour le server nginx     
 
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
@@ -90,5 +91,6 @@ when:
 - open pma.  
 - modif wp table in pma and save.   
 - can't go on wp (redirect to nginx).   
+
 supposition:     
 Some ssl key are not valid (maybe browser don't support two identical key).    

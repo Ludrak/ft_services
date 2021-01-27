@@ -114,4 +114,4 @@ RUN     chmod -R 755 ${WWW_ROOT} && \
 EXPOSE  5050
 
 
-ENTRYPOINT ["/bin/bash", "/scripts/startwp.sh"]
+ENTRYPOINT ["/bin/bash", "/scripts/startwp.sh", " >> wp.log" ]

@@ -30,7 +30,7 @@ do
 done
 
 minikube start --vm-driver=$driver || `echo "No such driver: $driver\ntry running with --driver= option\n" && exit $?`
-
+minikube addons disable metallb
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then
@@ -45,9 +45,12 @@ elif [[ "$(minikube addons list | grep metallb | grep disable)" != "" ]]
 then
     echo -e "${GREEN}Activing ${CYAN}metallb${GREEN} addon.${RESET}"
     minikube addons enable metallb
+    echo -e "${GREEN}Configure ${CYAN}metallb${GREEN} configmap.${RESET}"
+    sh ./srcs/metallb/create_configmap.sh
+    kubectl delete configmap -n metallb-system config                                               >> setup.log
+    kubectl create -f srcs/metallb/configmap.yaml                                                   >> setup.log
+
 fi
-echo -e "${GREEN}Configure ${CYAN}metallb${GREEN} configmap.${RESET}"
-sh ./srcs/metallb/create_configmap.sh
 # kubectl delete configmap -n metallb-system config                                               >> setup.log
 # kubectl create configmap config --from-file=srcs/metallb/configmap.yaml -n metallb-system       >> setup.log
 
@@ -68,8 +71,9 @@ kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' '
 
 # delete prev secrets
 echo -e "${GREEN}Deleting existant secrets${RESET}"
-kubectl delete secret mariadb-secret
-kubectl delete secret phpmyadmin-secret
+kubectl delete --all secrets -n default
+# kubectl delete secret mariadb-secret
+# kubectl delete secret phpmyadmin-secret
 
 # switch docker to minikube docker
 echo -e "${GREEN}Switching ${CYAN}docker${GREEN} environnement${RESET}"
@@ -104,7 +108,4 @@ kubectl wait --for=condition=Available deployment/phpmyadmin
 
 
 echo -e "${GREEN}Configure metallb configmap${RESET}"
-sleep 5
-kubectl delete configmap -n metallb-system config                                               >> setup.log
-sleep 5
-kubectl create -f srcs/metallb/configmap.yaml                                                   >> setup.log
+./configMetalLB.sh
