@@ -69,18 +69,18 @@ fi
 
 # delete prev nginx
 printf "${GREEN}Deleting existant deployments and services${RESET}\n"
-printf "- Delete ${YELLOW}NGINX${RESET}\n"
-kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )                    2>&1 >> $LOG
-kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )             2>&1 >> $LOG
-printf "- Delete ${YELLOW}PHPMYADMIN${RESET}\n"
-kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )               2>&1 >> $LOG
-kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )        2>&1 >> $LOG
-printf "- Delete ${YELLOW}MARIADB${RESET}\n"
-kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )                  2>&1 >> $LOG
-kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )                2>&1 >> $LOG
-printf "- Delete ${YELLOW}WORDPRESS${RESET}\n"
-kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )                2>&1 >> $LOG
-kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )         2>&1 >> $LOG
+printf "Delete ${YELLOW}NGINX${RESET}\n"
+kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )                    >> $LOG 2>&1
+kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )             >> $LOG 2>&1
+printf "Delete ${YELLOW}PHPMYADMIN${RESET}\n"
+kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 )               >> $LOG 2>&1
+kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )        >> $LOG 2>&1
+printf "Delete ${YELLOW}MARIADB${RESET}\n"
+kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )                  >> $LOG 2>&1
+kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )                >> $LOG 2>&1
+printf "Delete ${YELLOW}WORDPRESS${RESET}\n"
+kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )                >> $LOG 2>&1
+kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )         >> $LOG 2>&1
 
 # delete prev secrets
 printf "${GREEN}Deleting existant secrets.${RESET}\n"

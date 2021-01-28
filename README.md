@@ -78,7 +78,6 @@ TODO Create volume for InfluxDB
 TODO Container-build.sh: add a single output ligne when image finish to create     
 TODO Add a kubectl wait to each pods deletion  
 TODO add a kustomize.yaml
-TODO delete configMetalLB.sh
 
 -- nginx   
 MAYBE change nginx location in container filesystem     
@@ -92,12 +91,4 @@ TODO add SSL pma to mariadb
 
 -- wordpress    
 TODO add wp pluggin 
-BUG Error SSL protocol:    
-when:     
-- open wordpress.    
-- open pma.  
-- modif wp table in pma and save.   
-- can't go on wp (redirect to nginx).   
 
-supposition:     
-Some ssl key are not valid (maybe browser don't support two identical key).    
