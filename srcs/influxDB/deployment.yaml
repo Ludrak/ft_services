@@ -1,0 +1,56 @@
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: influxdb-pv-claim
+#   labels:
+#     app: influxdb
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 20Gi
+# ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb-app
+  template:
+    metadata:
+      name: influxdb-pod
+      labels:
+        app: influxdb-app
+    spec:
+      containers:
+      - name: influxdb-container
+        image: influxdb-image
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 8086
+            name: influxdb
+        # volumeMounts:
+        # - name: influxdb-persistent-storage
+        #   mountPath: /etc/influxdb
+        # volumes:
+        # - name: influxdb-persistent-storage
+        #   persistentVolumeClaim:
+        #     claimName: influxdb-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-service
+spec:
+  type: ClusterIP
+  clusterIP: 10.96.0.14
+  selector:
+    app: influxdb-app
+  ports:
+    - protocol: TCP
+      port: 8086
+      name: influxdb
