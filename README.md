@@ -87,6 +87,7 @@ TODO change pma inside position
 MAYBE change nginx location in container filesystem     
 TODO https: ssl error when reach wordpress on port 443     
 TODO Faire page d'acceuil pour le server nginx     
+TODO http://host:443 error
 
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
