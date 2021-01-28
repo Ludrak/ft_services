@@ -10,7 +10,7 @@ kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' 
 kubectl delete secret phpmyadmin-secret
 kubectl apply -f configs/phpmyadmin-secret.yaml 
 
-sh ./srcs/scripts/container-build.sh --image=phpmyadmin-image --path=./srcs/phpmyadmin/
+sh ./srcs/scripts/container-build.sh --image=phpmyadmin-image --path=./srcs/services/phpmyadmin/
 kubectl create -f srcs/phpmyadmin/deployment.yaml
 minikube dashboard
 fi
@@ -24,7 +24,7 @@ kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
 kubectl delete secret mariadb-secret
 kubectl apply -f configs/mariadb-secret.yaml 
 
-sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/mariadb/
+sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/services/mariadb/
 kubectl create -f srcs/mariadb/deployment.yaml
 minikube dashboard
 fi
@@ -34,7 +34,7 @@ then
 eval $(minikube docker-env)
 kubectl delete deploy $( kubectl get deploy | grep wordpress | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep wordpress-loadbalancer | cut -d ' ' -f 1 )
-sh ./srcs/scripts/container-build.sh --image=wordpress-image --path=./srcs/wordpress/
+sh ./srcs/scripts/container-build.sh --image=wordpress-image --path=./srcs/services/wordpress/
 kubectl create -f srcs/wordpress/deployment.yaml
 minikube dashboard
 fi
@@ -44,7 +44,7 @@ then
 eval $(minikube docker-env)
 kubectl delete deploy $( kubectl get deploy | grep nginx | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep nginx-loadbalancer | cut -d ' ' -f 1 )
-sh ./srcs/scripts/container-build.sh --image=nginx-image --path=./srcs/nginx/
+sh ./srcs/scripts/container-build.sh --image=nginx-image --path=./srcs/services/nginx/
 kubectl create -f srcs/nginx/deployment.yaml
 minikube dashboard
 fi

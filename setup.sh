@@ -12,13 +12,13 @@ LOG="./srcs/logs/setup.log"
 
 # functions
 deploy (){
-    kubectl create -f srcs/$1/deployment.yaml               2>&1 >> $LOG
-    kubectl wait --for=condition=Available deployment/$1    2>&1 >> $LOG
+    kubectl create -f srcs/services/$1/deployment.yaml                  2>&1 >> $LOG
+    kubectl wait --for=condition=Available deployment/$1                2>&1 >> $LOG
     printf "deployment $CYAN$1$RESET available.\n"
 }
 
 buildImg(){
-    sh ./srcs/scripts/container-build.sh --image=$1-image --path=./srcs/$1/     2>&1 >> $LOG
+    sh ./srcs/scripts/container-build.sh --image=$1-image --path=./srcs/services/$1/     2>&1 >> $LOG
     printf "image $CYAN$1$RESET created.\n"
 }
 
@@ -94,8 +94,8 @@ eval $(minikube docker-env)
 
 # Create secrets
 printf "${GREEN}Creating new secrets${RESET}\n"
-kubectl apply -f srcs/configs/mariadb-secret.yaml
-kubectl apply -f srcs/configs/phpmyadmin-secret.yaml
+kubectl apply -f srcs/secrets/mariadb-secret.yaml
+kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml
 
 # build docker image
 printf "${GREEN}Creating docker images.${RESET}\n"
