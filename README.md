@@ -74,7 +74,8 @@ Our secrets are stored in ./configs
 ### TODO List
 TODO Add a command line for auto install wordpress plugins 
 TODO Create volume for mariadb    
-TODO Create volume for InfluxDB    
+TODO Create volume for InfluxDB   
+TODO Delete volumes when setup.sh with specific option  
 TODO Container-build.sh: add a single output ligne when image finish to create     
 TODO Add a kubectl wait to each pods deletion  
 TODO add a kustomize.yaml

@@ -11,7 +11,7 @@ COPY influxdb.conf /etc/influxdb.conf
 COPY setupinfluxDB.sh /
 
 # Volume to persiting data
-VOLUME /etc/InfluxDB/
+# VOLUME /etc/InfluxDB/
 
 EXPOSE 8086
 
