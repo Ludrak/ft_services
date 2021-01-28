@@ -88,6 +88,7 @@ TODO http://host:443 error
 
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
+TODO add SSL pma to mariadb
 
 -- wordpress    
 TODO add wp pluggin 

@@ -23,8 +23,8 @@ buildImg(){
 }
 
 #init log
-mkdir ./srcs/logs       2>&1 >> /dev/null
-touch $LOG              2>&1 >> /dev/null
+mkdir ./srcs/logs        >> /dev/null 2>&1
+touch $LOG               >> /dev/null 2>&1
 printf "" > $LOG        
 
 printf "${GREEN}-- Start ${CYAN}FT_SERVICES${GREEN} installation --${RESET}\n"

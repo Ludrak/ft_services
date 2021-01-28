@@ -2,6 +2,9 @@
 
 set -e
 
+# start telegraf
+cd /telegraf-1.15.2/usr/bin/ && ./telegraf &
+cd /
 #Start mysqld
 /usr/bin/mysqld --datadir=/var/lib/mysql --user=mysql & 
 

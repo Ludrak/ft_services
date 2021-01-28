@@ -22,5 +22,15 @@ RUN     nginx -t && \
         if [ "$?" -eq "1" ] ; then \
                 exit 1 ; \
         fi
+# install telegraf
+RUN     apk add libc6-compat gcompat \ 
+        && wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz
 
-CMD     /usr/sbin/sshd && nginx
+RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
+        && rm telegraf-1.15.2_linux_amd64.tar.gz
+
+COPY    config/telegraf/telegraf.conf /etc/telegraf/ 
+
+COPY    config/setupNgx.sh /
+
+ENTRYPOINT [ "/bin/bash", "setupNgx.sh" ]
