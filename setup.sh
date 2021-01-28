@@ -14,16 +14,20 @@ LOG="./srcs/logs/setup.log"
 deploy (){
     kubectl create -f srcs/$1/deployment.yaml               2>&1 >> $LOG
     kubectl wait --for=condition=Available deployment/$1    2>&1 >> $LOG
-    printf "deployment $CYAN$1$RESET available."
+    printf "deployment $CYAN$1$RESET available.\n"
 }
 
 buildImg(){
     sh ./srcs/scripts/container-build.sh --image=$1-image --path=./srcs/$1/     2>&1 >> $LOG
-    printf "image $CYAN$1$RESET created."
+    printf "image $CYAN$1$RESET created.\n"
 }
 
+#init log
+mkdir ./srcs/logs       2>&1 >> /dev/null
+touch $LOG              2>&1 >> /dev/null
+printf "" > $LOG        
+
 printf "${GREEN}-- Start ${CYAN}FT_SERVICES${GREEN} installation --${RESET}\n"
-printf "" > $LOG
 # check if minikube is installed
 if [[ "$(minikube version | grep "minikube version:")" == "" ]]
 then
@@ -108,4 +112,15 @@ deploy mariadb
 deploy wordpress
 deploy phpmyadmin
 
-./srcs/scripts/configMetalLB.sh
+# apply metallb config
+minikube stop && minikube start --vm-driver=virtualbox
+eval $(minikube docker-env)
+
+printf "$GREEN Create$CYAN metallb$GREEN configmap. $RESET\n"
+sh ./srcs/metallb/create_configmap.sh
+
+printf "$GREEN Configure$CYAN metallb$GREEN.$RESET\n"
+kubectl delete configmap -n metallb-system config   2>&1 >> $LOG
+kubectl create -f srcs/metallb/configmap.yaml       2>&1 >> $LOG
+minikube dashboard
+# ./srcs/scripts/configMetalLB.sh

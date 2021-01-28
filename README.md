@@ -76,12 +76,9 @@ TODO Add a command line for auto install wordpress plugins
 TODO Create volume for mariadb    
 TODO Create volume for InfluxDB    
 TODO Container-build.sh: add a single output ligne when image finish to create     
-DONE Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
-TODO Add a kubectl wait to each pods deletion/creation    
-DONE Put configs folder in srcs
+TODO Add a kubectl wait to each pods deletion  
 TODO add a kustomize.yaml
-TODO add docker images creation log     
-TODO change pma inside position      
+TODO delete configMetalLB.sh
 
 -- nginx   
 MAYBE change nginx location in container filesystem     

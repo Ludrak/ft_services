@@ -102,4 +102,6 @@ RUN echo "- Install phpmyadmin" \
 
 EXPOSE  5000
 
+WORKDIR /
+
 ENTRYPOINT [ "/bin/bash", "/setupPma.sh" ]
