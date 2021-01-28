@@ -76,29 +76,19 @@ TODO Add a command line for auto install wordpress plugins
 TODO Create volume for mariadb    
 TODO Create volume for InfluxDB    
 TODO Container-build.sh: add a single output ligne when image finish to create     
-DONE Ensure thats metallb use only one IP by adding a spec.loadbalancerIP on services    
-TODO Add a kubectl wait to each pods deletion/creation    
-DONE Put configs folder in srcs
+TODO Add a kubectl wait to each pods deletion  
 TODO add a kustomize.yaml
-TODO add docker images creation log     
-TODO change pma inside position      
 
 -- nginx   
 MAYBE change nginx location in container filesystem     
 TODO https: ssl error when reach wordpress on port 443     
 TODO Faire page d'acceuil pour le server nginx     
+TODO http://host:443 error
 
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
+TODO add SSL pma to mariadb
 
 -- wordpress    
 TODO add wp pluggin 
-BUG Error SSL protocol:    
-when:     
-- open wordpress.    
-- open pma.  
-- modif wp table in pma and save.   
-- can't go on wp (redirect to nginx).   
 
-supposition:     
-Some ssl key are not valid (maybe browser don't support two identical key).    
