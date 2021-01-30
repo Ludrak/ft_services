@@ -62,6 +62,8 @@ remove_images=
 stop_containers=
 # stops and delete every active container and remove all previously built images
 remove_all=
+# if set build image with no-cache
+no_cache=
 
 ## COLORS
 # choose which fancy prefix you want to add
@@ -123,7 +125,7 @@ build_error=0
 build ()
 {
     echo $prefix "Building image :" $image_name $reset
-    docker build -t $image_name $image_path
+    docker build ${no_cache} -t $image_name $image_path
     build_error=$?
     if [[ "$build_error" != "0" ]]
     then
@@ -207,6 +209,10 @@ do
     elif [[ "$arg" = --run ]]
     then
         run_after_built=1
+        continue
+    elif [[ "$arg" = --no-cache ]]
+    then
+        no_cache="--no-cache"
         continue
     elif [[ "$arg" = --image=* ]]
     then
