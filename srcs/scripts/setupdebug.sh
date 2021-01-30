@@ -41,7 +41,7 @@ then
 eval $(minikube docker-env)
 kubectl delete deploy $( kubectl get deploy | grep grafana | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep grafana-loadbalancer | cut -d ' ' -f 1 )
-sh ./srcs/scripts/container-build.sh --image=grafana-image --path=./srcs/services/grafana/ --no-cache
+sh ./srcs/scripts/container-build.sh --image=grafana-image --path=./srcs/services/grafana/ 
 kubectl create -f srcs/services/grafana/deployment.yaml
 minikube dashboard
 fi

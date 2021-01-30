@@ -93,3 +93,5 @@ TODO add SSL pma to mariadb
 -- wordpress    
 TODO add wp pluggin 
 
+-- grafana    
+TODO access to grafana with https

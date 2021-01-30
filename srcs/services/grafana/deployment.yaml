@@ -19,7 +19,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
-        name: grafana
+          name: grafana
+        - containerPort: 8086
+          name: influxdb
 ---
 apiVersion: v1
 kind: Service

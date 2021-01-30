@@ -19,7 +19,10 @@ RUN adduser -DH -g 'grafana' grafana && \
 RUN	ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
 	ln -s /etc/grafana/bin/grafana-server /usr/bin
 
-COPY launch.sh ./launch.sh
+WORKDIR /etc/grafana
+
+COPY grafana.ini	./conf/grafana.ini
+COPY launch.sh		./launch.sh
 
 EXPOSE 3000
 
