@@ -77,7 +77,6 @@ TODO Create volume for mariadb
 TODO Create volume for InfluxDB   
 TODO Delete volumes when setup.sh with specific option  
 TODO Container-build.sh: add a single output ligne when image finish to create     
-TODO Add a kubectl wait to each pods deletion  
 TODO add a kustomize.yaml
 
 -- nginx   
@@ -89,9 +88,14 @@ TODO http://host:443 error
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
 TODO add SSL pma to mariadb
+TODO connect phpmyadmin to influxdb
+TODO add SSL pma to influxdb
 
 -- wordpress    
 TODO add wp pluggin 
 
 -- grafana    
 TODO access to grafana with https
+
+-- telegraf    
+TODO add telegraf to inbfluxdb and grafana services

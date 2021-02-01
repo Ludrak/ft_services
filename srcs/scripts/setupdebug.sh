@@ -9,7 +9,7 @@ kubectl delete deploy $( kubectl get deploy | grep phpmyadmin | cut -d ' ' -f 1 
 kubectl delete svc $( kubectl get svc | grep phpmyadmin-loadbalancer | cut -d ' ' -f 1 )
 
 kubectl delete secret phpmyadmin-secret
-kubectl apply -f configs/phpmyadmin-secret.yaml 
+kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml 
 
 sh ./srcs/scripts/container-build.sh --image=phpmyadmin-image --path=./srcs/services/phpmyadmin/
 kubectl create -f srcs/services/phpmyadmin/deployment.yaml
@@ -53,7 +53,7 @@ kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
 
 kubectl delete secret mariadb-secret
-kubectl apply -f configs/mariadb-secret.yaml 
+kubectl apply -f srcs/secrets/mariadb-secret.yaml 
 
 sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/services/mariadb/
 kubectl create -f srcs/services/mariadb/deployment.yaml
