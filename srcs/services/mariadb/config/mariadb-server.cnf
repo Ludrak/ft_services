@@ -8,11 +8,18 @@
 # this is only for the mysqld standalone daemon
 [mysqld]
 #skip-networking
-port=3306
-bind-address=0.0.0.0
-skip-networking = false
+port                    =   3306
+bind-address            =   0.0.0.0
+skip-networking         =   false
 #skip-name-resolve
 #skip-host-cache
+
+## Securing the Database with ssl option and certificates ##
+ssl                     =   true
+# ssl-ca                  =   /etc/mariadb/ssl/ca-cert.pem
+ssl-cert                =   /etc/mariadb/ssl/mariadb-selfsigned.crt
+ssl-key                 =   /etc/mariadb/ssl/mariadb-selfsigned.key
+ssl-cipher				=	DHE-RSA-AES256-SHA
 
 # Galera-related settings
 [galera]

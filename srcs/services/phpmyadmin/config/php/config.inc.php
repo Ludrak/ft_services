@@ -27,17 +27,19 @@ $i = 0;
  */
 $i++;
 /* Authentication type */
-$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['auth_type']			= 'config';
 // /* Server parameters */
-$cfg['Servers'][$i]['host'] = 'mariadb-service';
+$cfg['Servers'][$i]['host']					= 'mariadb-service';
 $cfg['Servers'][$i]['user'] = '';
 $cfg['Servers'][$i]['password'] = '';
 
-$cfg['Servers'][$i]['port'] = '3306';
-$cfg['Servers'][$i]['compress'] = false;
-$cfg['Servers'][$i]['AllowNoPassword'] = false;
+$cfg['Servers'][$i]['port']             	= '3306';
+$cfg['Servers'][$i]['compress']           	= false;
+$cfg['Servers'][$i]['AllowNoPassword']    	= false;
 // $cfg['Servers'][$i]['AllowRoot'] = false;
-
+$cfg['Servers'][$i]['ssl']					= true;
+$cfg['Servers'][$i]['cert']					= '/etc/ssl/private/nginx-selfsigned.key'; 
+$cfg['Servers'][$i]['key']					= '/etc/ssl/private/nginx-selfsigned.crt';
 
 /**
  * phpMyAdmin configuration storage settings.

@@ -9,9 +9,18 @@ ENV     MYSQL_COLLATION="utf8_general_ci"
 ENV     MYSQL_USER="mysql"
 
 # dependencies
-RUN     apk --update --no-cache add bash wget util-linux openrc \
+RUN     apk --update --no-cache add bash wget util-linux openrc openssl \
         && mkdir /run/openrc \
         && touch /run/openrc/softlevel
+
+# openssl generation
+RUN     openssl req -x509 -nodes \
+        -days 365 \
+        -subj "/C=FR/ST=69/O=Company, Inc./CN=${WWW_DOMAIN}" \
+        -addext "subjectAltName=DNS:${WWW_DOMAIN}" \
+        -newkey rsa:2048 \
+        -keyout /etc/mariadb/ssl/private/mariadb-selfsigned.key \
+        -out    /etc/mariadb/ssl/certs/mariadb-selfsigned.crt;
 
 # add mysql user
 RUN     adduser -D -g "${MYSQL_USER}" ${MYSQL_USER} && \
