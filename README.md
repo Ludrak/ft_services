@@ -83,7 +83,7 @@ TODO add a kustomize.yaml
 -- nginx   
 MAYBE change nginx location in container filesystem     
 TODO https: ssl error when reach wordpress on port 443     
-TODO Faire page d'acceuil pour le server nginx     
+MAYBE Faire page d'acceuil pour le server nginx     
 TODO http://host:443 error
 
 -- phpmyadmin    
@@ -94,4 +94,14 @@ TODO add SSL pma to mariadb
 TODO add wp pluggin 
 
 -- grafana    
-TODO access to grafana with https
+MAYBE access to grafana with https
+TODO connect grafana to InfluxDB database (create by telegraf)
+TODO create and config dashboards of grafana
+
+-- influxDB
+TODO create volume (in docker and kubernetes)
+
+-- TIG
+TODO connect differents services together
+TODO see if influxDB service connect influxDB and telegraf
+TODO see if influxDB service connect influxDB and grafana

@@ -33,4 +33,4 @@ COPY config/grafana.ini	etc/grafana/conf/grafana.ini
 
 EXPOSE 3000
 
-CMD ./launch.sh
+ENTRYPOINT [ "/bin/sh", "/launch.sh"]

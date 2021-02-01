@@ -5,14 +5,15 @@ cd /telegraf-1.15.2/usr/bin/ && ./telegraf &
 cd /
 
 #launch grafana
-grafana-server web
+#cd /etc/grafana
+grafana-server web &
 
 
 # grafana-cli
-while true
-do
- sleep 1
-done
+#while true
+#do
+# sleep 1
+#done
 
 
 #	CMD BUILD IMAGE ALPINE AND EXEC IT
