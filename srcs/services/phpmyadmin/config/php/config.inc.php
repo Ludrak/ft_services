@@ -40,6 +40,10 @@ $cfg['Servers'][$i]['AllowNoPassword']    	= false;
 $cfg['Servers'][$i]['ssl']					= true;
 $cfg['Servers'][$i]['cert']					= '/etc/ssl/private/nginx-selfsigned.key'; 
 $cfg['Servers'][$i]['key']					= '/etc/ssl/private/nginx-selfsigned.crt';
+$cfg['Servers'][$i]['ssl_ca']				= '/etc/ssl/certs/ca-certificates.crt'; 
+$cfg['Servers'][$i]['ssl_ca_path']			= '/etc/ssl/certs'; 
+$cfg['Servers'][$i]['ssl_verify']           = false;
+
 
 /**
  * phpMyAdmin configuration storage settings.

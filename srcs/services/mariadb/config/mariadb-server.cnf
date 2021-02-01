@@ -15,10 +15,10 @@ skip-networking         =   false
 #skip-host-cache
 
 ## Securing the Database with ssl option and certificates ##
-ssl                     =   true
-# ssl-ca                  =   /etc/mariadb/ssl/ca-cert.pem
-ssl-cert                =   /etc/mariadb/ssl/mariadb-selfsigned.crt
-ssl-key                 =   /etc/mariadb/ssl/mariadb-selfsigned.key
+ssl                     =   on
+ssl-ca                  =   /etc/ssl/certs/ca-certificates.crt
+ssl-cert                =   /etc/ssl/certs/mariadb-selfsigned.crt
+ssl-key                 =   /etc/ssl/private/mariadb-selfsigned.key
 ssl-cipher				=	DHE-RSA-AES256-SHA
 
 # Galera-related settings

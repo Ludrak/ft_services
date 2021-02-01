@@ -120,8 +120,8 @@ buildImg grafana
 
 # deploy service
 printf "${GREEN}Creating deployments.${RESET}\n"
-deploy mariadb
 deploy influxdb
+deploy mariadb
 deploy nginx
 deploy wordpress
 deploy phpmyadmin

@@ -29,7 +29,8 @@ RUN     adduser -D -g "${MYSQL_USER}" ${MYSQL_USER} && \
         chmod -R 775 ${MYSQL_DATADIR} && \
         chmod -R 775 /run/mysqld && \
         chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATADIR} && \
-        chown -R ${MYSQL_USER}:${MYSQL_USER} /run/mysqld
+        chown -R ${MYSQL_USER}:${MYSQL_USER} /run/mysqld && \
+        chown -R ${MYSQL_USER}:${MYSQL_USER} /etc/ssl
 
 
 # install mariadb
