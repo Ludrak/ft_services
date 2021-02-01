@@ -29,7 +29,8 @@ RUN	ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
 	ln -s /etc/grafana/bin/grafana-server /usr/bin
 
 COPY config/launch.sh		./launch.sh
-COPY config/grafana.ini	etc/grafana/conf/grafana.ini
+# COPY config/grafana.ini	etc/grafana/grafana.ini
+COPY config/Influxdb.yaml	etc/grafana/conf/provisioning/datasources/
 
 EXPOSE 3000
 

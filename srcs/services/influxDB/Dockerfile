@@ -6,11 +6,11 @@ RUN apk update && \
 	apk add --no-cache influxdb bash
 
 # Copy InfluxDB config
-COPY ./config/influxdb.conf /etc/influxdb.conf
+COPY    ./config/influxdb.conf /etc/influxdb.conf
 
 # Copy Entrypoint
-COPY config/setupinfluxDB.sh /
-RUN chmod +x setupinfluxDB.sh
+COPY    config/setupinfluxDB.sh /
+RUN     chmod +x setupinfluxDB.sh
 
 # install telegraf
 RUN     apk add libc6-compat gcompat \
