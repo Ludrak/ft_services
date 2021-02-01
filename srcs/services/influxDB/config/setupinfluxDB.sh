@@ -7,3 +7,9 @@ cd /
 
 #starting influxDB
 influx -config /etc/influxdb.conf
+influxd
+
+while 1
+do
+	sleep1
+done

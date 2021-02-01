@@ -8,11 +8,11 @@ cd /
 grafana-server web
 
 
-# grafana-cli 
-# while true
-# do
-# sleep 1
-# done
+# grafana-cli
+while true
+do
+ sleep 1
+done
 
 
 #	CMD BUILD IMAGE ALPINE AND EXEC IT
