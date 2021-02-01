@@ -54,3 +54,6 @@ spec:
     - protocol: TCP
       port: 8086
       name: influxdb
+    - protocol: TCP
+      port: 8088
+      name: intrainfluxdb

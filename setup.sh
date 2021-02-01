@@ -66,7 +66,7 @@ do
     fi
 done
 
-minikube start --vm-driver=$driver || `printf "No such driver: $driver\ntry running with --driver= option.\n" && exit $?`
+minikube start --driver=$driver || `printf "No such driver: $driver\ntry running with --driver= option.\n" && exit $?`
 # check if metallb addon exists
 if [[ "$(minikube addons list | grep metallb)" == "" ]]
 then

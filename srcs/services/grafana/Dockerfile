@@ -10,6 +10,15 @@ RUN wget https://dl.grafana.com/oss/release/grafana-7.3.7.linux-amd64.tar.gz\
 	&& mv grafana-7.3.7 etc/grafana \
 	&& rm grafana-7.3.7.linux-amd64.tar.gz
 
+# install telegraf
+RUN     apk add libc6-compat gcompat \
+        && wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz
+
+RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
+        && rm telegraf-1.15.2_linux_amd64.tar.gz
+
+COPY    config/telegraf/telegraf.conf /etc/telegraf/
+
 # Creating Grafana User
 RUN adduser -DH -g 'grafana' grafana && \
 	chown -R grafana:grafana /etc/grafana && \
