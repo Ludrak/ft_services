@@ -35,4 +35,4 @@ COPY launch.sh		./launch.sh
 
 EXPOSE 3000
 
-CMD ./launch.sh
+CMD ./config/launch.sh
