@@ -11,10 +11,10 @@ You can choose your driver with: `bash setup.sh --driver="docker|virtualbox"`
 Once project is build, you can find log in `setup.log` and connect to dashboard with: `minikube dashboard`.
 
 # servers
-Each server is deployed on a different pod.
+Each server is deployed on a different pod, one container by pod.
 
 ## Grafana
-Grafana is an ...
+Grafana is a monitoring solution that display a real-time servers status.
 
 ## Nginx
 
@@ -87,7 +87,6 @@ TODO http://host:443 error
 
 -- phpmyadmin    
 BUG Connect to phpmyadmin without tables creation's right.    
-TODO add SSL pma to mariadb
 TODO connect phpmyadmin to influxdb
 TODO add SSL pma to influxdb
 
