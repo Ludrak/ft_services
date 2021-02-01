@@ -5,8 +5,8 @@ cd /telegraf-1.15.2/usr/bin/ && ./telegraf &
 cd /
 
 #launch grafana
-#cd /etc/grafana
-grafana-server web &
+cd /etc/grafana
+grafana-server web 
 
 
 # grafana-cli
