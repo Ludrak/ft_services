@@ -30,8 +30,8 @@ RUN	ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
 
 WORKDIR /etc/grafana
 
-COPY grafana.ini	./conf/grafana.ini
-COPY launch.sh		./launch.sh
+COPY config/grafana.ini	./conf/grafana.ini
+COPY config/launch.sh		./launch.sh
 
 EXPOSE 3000
 
