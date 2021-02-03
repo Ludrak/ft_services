@@ -1,5 +1,6 @@
 FROM	alpine:3.12
 
+LABEL	maintainer Lecaille Nathan <nlecaill@student.42lyon.fr>
 
 # mysql db info
 ENV     MYSQL_DATADIR="/var/lib/mysql"

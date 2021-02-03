@@ -1,6 +1,7 @@
 FROM	nginx-base-image
 
 LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
+LABEL	maintainer Lecaille Nathan <nlecaill@student.42lyon.fr>
 
 # nginx copy config
 COPY    ./config/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf

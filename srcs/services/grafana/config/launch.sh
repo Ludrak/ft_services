@@ -6,7 +6,7 @@ cd /
 
 #launch grafana
 cd /etc/grafana
-grafana-server web 
+grafana-server --config=/etc/grafana/conf/grafana.ini web
 
 
 # grafana-cli

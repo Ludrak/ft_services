@@ -1,5 +1,7 @@
 FROM	nginx-base-image
+
 LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
+LABEL	maintainer Lecaille Nathan <nlecaill@student.42lyon.fr>
 
 ENV     WP_LOCALE="en_US"
 
