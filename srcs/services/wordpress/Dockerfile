@@ -14,8 +14,9 @@ ENV     WP_LOCALE="en_US"
 ENV     PHP_VERSION="7"
 
 # dependencies
-RUN     apk --update --no-cache add bash openssl wget bind-tools
-
+RUN     apk --update --no-cache add bash openssl wget bind-tools openrc \
+        && mkdir /run/openrc \
+        && touch /run/openrc/softlevel
 
 # openssl generation
 RUN     openssl req -x509 -nodes \
@@ -92,6 +93,14 @@ RUN     nginx -t && \
                 exit 1 ; \
         fi
 
+# install telegraph
+RUN apk add libc6-compat gcompat \ 
+        && wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz
+
+RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
+        && rm telegraf-1.15.2_linux_amd64.tar.gz
+
+COPY    config/telegraf/telegraf.conf /etc/telegraf/
 
 # wpcli install
 RUN     wget -qO /usr/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
@@ -111,14 +120,6 @@ RUN     chmod -R 755 ${WWW_ROOT} && \
         sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php \
         && chmod +x /scripts/setupWp.sh
 
-# install telegraph
-RUN apk add libc6-compat gcompat \ 
-        && wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz
-
-RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
-        && rm telegraf-1.15.2_linux_amd64.tar.gz
-
-COPY    config/telegraf/telegraf.conf /etc/telegraf/
 
 EXPOSE  5050
 
