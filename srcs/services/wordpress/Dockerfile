@@ -14,9 +14,7 @@ ENV     WP_LOCALE="en_US"
 ENV     PHP_VERSION="7"
 
 # dependencies
-RUN     apk --update --no-cache add bash openssl wget bind-tools openrc \
-        && mkdir /run/openrc \
-        && touch /run/openrc/softlevel
+RUN     apk --update --no-cache add bash openssl wget bind-tools 
 
 # openssl generation
 RUN     openssl req -x509 -nodes \

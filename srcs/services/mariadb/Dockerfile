@@ -10,9 +10,7 @@ ENV     MYSQL_COLLATION="utf8_general_ci"
 ENV     MYSQL_USER="mysql"
 
 # dependencies
-RUN     apk --update --no-cache add bash wget util-linux openrc openssl \
-        && mkdir /run/openrc \
-        && touch /run/openrc/softlevel
+RUN     apk --update --no-cache add bash wget util-linux openssl
 
 # openssl generation
 RUN     openssl req -x509 -nodes \
