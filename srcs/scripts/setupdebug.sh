@@ -67,6 +67,7 @@ kubectl delete deploy $( kubectl get deploy | grep influxdb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep influxdb-service | cut -d ' ' -f 1 )
 
 kubectl delete secret influxdb-secret
+kubectl delete pvc/influxdb-volume
 kubectl apply -f configs/influxdb-secret.yaml 
 
 sh ./srcs/scripts/container-build.sh --image=influxdb-image --path=./srcs/services/influxdb/
