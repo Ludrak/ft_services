@@ -1,5 +1,5 @@
 FROM	alpine:3.12
-LABEL	maintainer Luca Robino <lrobino@student.42lyon.fr>
+
 
 # mysql db info
 ENV     MYSQL_DATADIR="/var/lib/mysql"
