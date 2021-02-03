@@ -95,13 +95,6 @@ TODO add wp pluggin
 
 -- grafana    
 MAYBE access to grafana with https
-TODO connect grafana to InfluxDB database (create by telegraf)
-TODO create and config dashboards of grafana
 
 -- influxDB
 TODO create volume (in docker and kubernetes)
-
--- TIG
-TODO connect differents services together
-TODO see if influxDB service connect influxDB and telegraf
-TODO see if influxDB service connect influxDB and grafana
