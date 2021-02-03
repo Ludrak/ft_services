@@ -6,8 +6,9 @@ LABEL	maintainer Lecaille Nathan <nlecaill@student.42lyon.fr>
 # nginx copy config
 COPY    ./config/localhost.conf /etc/nginx/sites-available/${WWW_DOMAIN}.conf
 # nginx copy default html
-COPY    ./config/index.html ${WWW_ROOT}/index.html
+COPY    ./config/website    ${WWW_ROOT}/website
 
+RUN     mv ${WWW_ROOT}/website/* ${WWW_ROOT}/ && rm -rf ${WWW_ROOT}/website
 # nginx edit config
 RUN     sed -i -e "s+WWW_ROOT+${WWW_ROOT}+g" -e "s+WWW_USER+${WWW_USER}+g" -e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" /etc/nginx/nginx.conf && \
         sed -i -e "s+WWW_ROOT+${WWW_ROOT}+g" -e "s+WWW_DOMAIN+${WWW_DOMAIN}+g" /etc/nginx/sites-available/${WWW_DOMAIN}.conf
