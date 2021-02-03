@@ -80,18 +80,7 @@ TODO Container-build.sh: add a single output ligne when image finish to create
 TODO add a kustomize.yaml
 
 -- nginx   
-MAYBE change nginx location in container filesystem     
-TODO https: ssl error when reach wordpress on port 443     
 MAYBE Faire page d'acceuil pour le server nginx     
-TODO http://host:443 error
-
--- phpmyadmin    
-BUG Connect to phpmyadmin without tables creation's right.    
-TODO connect phpmyadmin to influxdb
-TODO add SSL pma to influxdb
-
--- wordpress    
-TODO add wp pluggin 
 
 -- grafana    
 MAYBE access to grafana with https
