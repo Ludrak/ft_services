@@ -19,18 +19,21 @@ RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
 
 COPY    config/telegraf/telegraf.conf /etc/telegraf/
 
+COPY	config/Influxdb.yaml	/etc/grafana/conf/provisioning/datasources/
+COPY	config/dashboard/ft_services.yaml	/etc/grafana/conf/provisioning/dashboards/
+COPY	config/dashboard/ft_services_dashboard.json   /var/lib/grafana/dashboards/
+
 # Creating Grafana User
-RUN adduser -DH -g 'grafana' grafana && \
-	chown -R grafana:grafana /etc/grafana && \
-	chmod -R 744 /etc/grafana
+RUN		adduser -DH -g 'grafana' grafana && \
+		chown -R grafana:grafana /etc/grafana && \
+		chmod -R 744 /etc/grafana
 
 # Installation
-RUN	ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
-	ln -s /etc/grafana/bin/grafana-server /usr/bin
+RUN		ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
+		ln -s /etc/grafana/bin/grafana-server /usr/bin
 
-COPY config/launch.sh		./launch.sh
+COPY	config/launch.sh		./launch.sh
 # COPY config/grafana.ini	etc/grafana/grafana.ini
-COPY config/Influxdb.yaml	etc/grafana/conf/provisioning/datasources/
 
 EXPOSE 3000
 
