@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftps-app
+  template:
+    metadata:
+      name: ftps-pod
+      labels:
+        app: ftps-app
+    spec:
+      containers:
+      - name: ftps-container
+        image: ftps-image
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 21
+          name: ftps-listen
+        - containerPort: 20
+          name: default-data
+        - containerPort: 21000
+          name: ftps-data-0
+        - containerPort: 21001
+          name: ftps-data-1
+        - containerPort: 21002
+          name: ftps-data-2
+        - containerPort: 21003
+          name: ftps-data-3
+        - containerPort: 21004
+          name: ftps-data-4
+        - containerPort: 21005
+          name: ftps-data-5
+        - containerPort: 21006
+          name: ftps-data-6
+        - containerPort: 21007
+          name: ftps-data-7
+        - containerPort: 21008
+          name: ftps-data-8
+        - containerPort: 21009
+          name: ftps-data-9
+        - containerPort: 21010
+          name: ftps-data-10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps-loadbalancer
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+spec:
+  type: LoadBalancer
+  selector:
+    app: ftps-app
+  ports:
+      - port: 21
+        name: ftps-listen
+        protocol: TCP
+      - port: 20
+        name: default-data
+        protocol: TCP
+      - port: 21000
+        name: ftps-data-0
+        protocol: TCP
+      - port: 21001
+        name: ftps-data-1
+        protocol: TCP
+      - port: 21002
+        name: ftps-data-2
+        protocol: TCP
+      - port: 21003
+        name: ftps-data-3
+        protocol: TCP
+      - port: 21004
+        name: ftps-data-4
+        protocol: TCP
+      - port: 21005
+        name: ftps-data-5
+        protocol: TCP
+      - port: 21006
+        name: ftps-data-6
+        protocol: TCP
+      - port: 21007
+        name: ftps-data-7
+        protocol: TCP
+      - port: 21008
+        name: ftps-data-8
+        protocol: TCP
+      - port: 21009
+        name: ftps-data-9
+        protocol: TCP
+      - port: 21010
+        name: ftps-data-10
+        protocol: TCP

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# exit on error
+
 # colors
 GREEN='\033[92m'
 YELLOW='\033[93m'
@@ -11,19 +13,22 @@ RESET='\033[0m'
 LOG="./srcs/logs/setup.log"
 
 # functions
-delete (){
+delete ()
+{
 	printf "Delete ${YELLOW}$(echo "$1" | tr '[:lower:]' '[:upper:]')${RESET}.\n"
 	if [[ $2 == "db" ]]
 	then
-		kubectl delete svc $( kubectl get svc | grep $1-service | cut -d ' ' -f 1 )            		>> $LOG 2>&1
+		kubectl delete svc $( kubectl get svc | grep $1-service | cut -d ' ' -f 1 )            		  >> $LOG 2>&1
 	else
-		kubectl delete svc $( kubectl get svc | grep $1-loadbalancer | cut -d ' ' -f 1 )         	>> $LOG 2>&1
+		kubectl delete svc $( kubectl get svc | grep $1-loadbalancer | cut -d ' ' -f 1 )         	  >> $LOG 2>&1 
 	fi
-	kubectl delete deploy $( kubectl get deploy | grep $1 | cut -d ' ' -f 1 )                   	>> $LOG 2>&1
+	kubectl delete deploy $( kubectl get deploy | grep $1 | cut -d ' ' -f 1 )                   	  >> $LOG 2>&1
 	kubectl wait --for=delete --timeout=60s deployment/$1
 
 }
-deploy (){
+
+deploy ()
+{
     kubectl create -f srcs/services/$1/deployment.yaml                  2>&1 >> $LOG
     kubectl wait --for=condition=Available deployment/$1                2>&1 >> $LOG
 	if [[ $? == 0 ]]
@@ -34,15 +39,21 @@ deploy (){
 	fi
 }
 
-buildImg(){
+buildImg()
+{
+    printf "building $CYAN$1$RESET ..."
     sh ./srcs/scripts/container-build.sh --image=$1-image --path=./srcs/services/$1/     2>&1 >> $LOG
-    printf "image $CYAN$1$RESET created.\n"
+    if [[ $? -eq '0' ]] ; then
+        printf "\rimage $CYAN$1$RESET created.\n";
+    else
+        echo "\rimage $CYAN$1$RESET$RED failed$RESET : $?\n"
+    fi
 }
 
 #init log
-mkdir ./srcs/logs       >> /dev/null 2>&1
-touch $LOG              >> /dev/null 2>&1
-printf ""               > $LOG        
+mkdir -p $( dirname $LOG )  >> /dev/null 2>&1
+touch $LOG                  >> /dev/null 2>&1
+printf ""                   > $LOG        
 
 printf "${GREEN}-- Start ${CYAN}FT_SERVICES${GREEN} installation --${RESET}\n"
 # check if minikube is installed
@@ -90,6 +101,7 @@ delete	nginx
 delete	wordpress
 delete	phpmyadmin
 delete	grafana
+delete  ftps
 delete	mariadb		db
 delete	influxdb	db
 
@@ -102,6 +114,8 @@ kubectl delete secret phpmyadmin-secret
 printf "${GREEN}Switching ${CYAN}docker$GREEN environnements${RESET}\n"
 eval $(minikube docker-env)
 
+# apply role bindings
+kubectl apply -f srcs/role-binding.yaml
 
 # Create secrets
 printf "${GREEN}Creating new secrets${RESET}\n"
@@ -117,6 +131,7 @@ buildImg wordpress
 buildImg phpmyadmin
 buildImg influxdb
 buildImg grafana
+buildImg ftps
 
 # deploy service
 printf "${GREEN}Creating deployments.${RESET}\n"
@@ -125,17 +140,18 @@ deploy mariadb
 deploy nginx
 deploy wordpress
 deploy phpmyadmin
+deploy ftps
 deploy grafana
 
 # apply metallb config
-printf "$GREEN Restarting$CYAN Minikube$GREEN.$RESET\n"
+printf $GREEN "Restarting$CYAN Minikube$GREEN.$RESET\n"
 minikube stop && minikube start --vm-driver=virtualbox
 eval $(minikube docker-env)
 
-printf "$GREEN Create$CYAN metallb$GREEN configmap. $RESET\n"
+printf $GREEN "Create$CYAN metallb$GREEN configmap. $RESET\n"
 sh ./srcs/metallb/create_configmap.sh
 
-printf "$GREEN Configure$CYAN metallb$GREEN.$RESET\n"
+printf $GREEN "Configure$CYAN metallb$GREEN.$RESET\n"
 kubectl delete configmap -n metallb-system config   2>&1 >> $LOG
 kubectl create -f srcs/metallb/configmap.yaml       2>&1 >> $LOG
 minikube dashboard
