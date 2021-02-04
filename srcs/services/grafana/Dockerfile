@@ -25,7 +25,7 @@ COPY    config/telegraf/telegraf.conf /etc/telegraf/
 COPY	config/Influxdb.yaml	/etc/grafana/conf/provisioning/datasources/
 COPY	config/grafana.ini		/etc/grafana/conf
 COPY	config/dashboard/ft_services.yaml	/etc/grafana/conf/provisioning/dashboards/
-COPY	config/dashboard/ft_services_dashboard.json   /var/lib/grafana/dashboards/
+COPY	config/dashboard/*.json   /var/lib/grafana/dashboards/
 
 RUN		mkdir /etc/grafana/ssl
 # openssl generation

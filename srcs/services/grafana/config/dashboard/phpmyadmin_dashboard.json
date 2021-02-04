@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -33,7 +33,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
         "y": 0
@@ -80,34 +80,39 @@
               "type": "fill"
             }
           ],
-          "measurement": "cpu",
+          "measurement": "diskio",
           "orderByTime": "ASC",
           "policy": "default",
-          "queryType": "randomWalk",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "usage_system"
+                  "iops_in_progress"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "distinct"
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=",
+              "value": "phpmyadmin"
+            }
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Panel Title",
+      "title": "iops in progress",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -145,7 +150,6 @@
       }
     }
   ],
-  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -153,12 +157,12 @@
     "list": []
   },
   "time": {
-    "from": "2021-02-02T22:16:10.182Z",
-    "to": "2021-02-02T22:57:22.376Z"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "ft_services_dashboard",
-  "uid": "HWRWSLYGk",
-  "version": 1
+  "title": "phpmyadmin",
+  "uid": null,
+  "version": 0
 }

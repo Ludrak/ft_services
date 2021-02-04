@@ -27,6 +27,22 @@ delete ()
 
 }
 
+deleteEnv(){
+    # delete prev nginx
+    printf "${GREEN}Deleting existant deployments and services${RESET}\n"
+    delete	nginx
+    delete	wordpress
+    delete	phpmyadmin
+    delete	grafana
+    delete  ftps
+    delete	mysql		db
+    delete	influxdb	db
+    # delete prev secrets
+    printf "${GREEN}Deleting existant secrets.${RESET}\n"
+    kubectl delete secret mysql-secret
+    kubectl delete secret phpmyadmin-secret
+}
+
 deploy ()
 {
     kubectl create -f srcs/services/$1/deployment.yaml                  2>&1 >> $LOG
@@ -46,7 +62,7 @@ buildImg()
     if [[ $? -eq '0' ]] ; then
         printf "\rimage $CYAN$1$RESET created.\n";
     else
-        echo "\rimage $CYAN$1$RESET$RED failed$RESET : $?\n"
+        printf "\rimage $CYAN$1$RESET$RED failed$RESET : $?\n"
     fi
 }
 
@@ -57,6 +73,7 @@ printf ""                   > $LOG
 
 printf "${GREEN}-- Start ${CYAN}FT_SERVICES${GREEN} installation --${RESET}\n"
 # check if minikube is installed
+printf "${GREEN}Check minikube installation.$RESET\n"
 if [[ "$(minikube version | grep "minikube version:")" == "" ]]
 then
     printf "${RED}Minikube is not installed.${RESET}\n"
@@ -94,33 +111,14 @@ then
     minikube addons enable metallb
 fi
 
-
-# delete prev nginx
-printf "${GREEN}Deleting existant deployments and services${RESET}\n"
-delete	nginx
-delete	wordpress
-delete	phpmyadmin
-delete	grafana
-delete  ftps
-delete	mysql		db
-delete	influxdb	db
-
-# delete prev secrets
-printf "${GREEN}Deleting existant secrets.${RESET}\n"
-kubectl delete secret mysql-secret
-kubectl delete secret phpmyadmin-secret
+if [[ "$1" == "delete" ]]
+then
+    deleteEnv
+fi
 
 # switch docker to minikube docker
 printf "${GREEN}Switching ${CYAN}docker$GREEN environnements${RESET}\n"
 eval $(minikube docker-env)
-
-# apply role bindings
-# kubectl apply -f srcs/role-binding.yaml
-
-# Create secrets
-printf "${GREEN}Creating new secrets${RESET}\n"
-# kubectl apply -f srcs/secrets/mysql-secret.yaml
-# kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml
 
 # build docker image
 printf "${GREEN}Creating docker images.${RESET}\n"
@@ -132,29 +130,17 @@ buildImg phpmyadmin
 buildImg influxdb
 buildImg grafana
 buildImg ftps
+
+printf $GREEN "Create$CYAN metallb$GREEN configmap. $RESET\n"
 sh ./srcs/metallb/create_configmap.sh
 
+printf "${GREEN}Creating deployments.${RESET}\n"
 kubectl apply -k ./srcs/
 
-# deploy service
-# printf "${GREEN}Creating deployments.${RESET}\n"
-# deploy influxdb
-# deploy mysql
-# deploy nginx
-# deploy wordpress
-# deploy phpmyadmin
-# deploy ftps
-# deploy grafana
-
-# apply metallb config
-# printf $GREEN "Restarting$CYAN Minikube$GREEN.$RESET\n"
-# minikube stop && minikube start --vm-driver=virtualbox
-# eval $(minikube docker-env)
-
-# printf $GREEN "Create$CYAN metallb$GREEN configmap. $RESET\n"
-sh ./srcs/metallb/create_configmap.sh
-
-# printf $GREEN "Configure$CYAN metallb$GREEN.$RESET\n"
-# kubectl delete configmap -n metallb-system config   2>&1 >> $LOG
-# kubectl create -f srcs/metallb/configmap.yaml       2>&1 >> $LOG
-minikube dashboard
+printf "${GREEN}Starting dashboard.${RESET}\n"
+# minikube dashboard 2>&1 > /dev/null &
+# while [[ "$1" != "0" ]]
+# do
+minikube dashboard # 2>&1 > /dev/null &
+# done
+# printf "${GREEN}***${CYAN}Goodbye${GREEN}.${RESET}\n"
