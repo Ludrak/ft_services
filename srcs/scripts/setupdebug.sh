@@ -53,7 +53,9 @@ kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
 
 kubectl delete secret mariadb-secret
-kubectl apply -f srcs/secrets/mariadb-secret.yaml 
+kubectl delete pvc/mariadb-volume
+
+kubectl apply -f srcs/secrets/mariadb-secret.yaml
 
 sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/services/mariadb/
 kubectl create -f srcs/services/mariadb/deployment.yaml
