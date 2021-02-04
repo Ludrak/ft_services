@@ -82,7 +82,4 @@ Our secrets are stored in ./srcs/secrets/
     `kubectl create -f srcs/metallb/configmap.yaml`
 
 ### TODO List
-TODO Create volume for mysql    
-TODO Delete volumes when setup.sh with specific option  
-MAYBE add a kustomize.yaml
 TODO    add life probs

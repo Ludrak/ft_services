@@ -115,12 +115,12 @@ printf "${GREEN}Switching ${CYAN}docker$GREEN environnements${RESET}\n"
 eval $(minikube docker-env)
 
 # apply role bindings
-kubectl apply -f srcs/role-binding.yaml
+# kubectl apply -f srcs/role-binding.yaml
 
 # Create secrets
 printf "${GREEN}Creating new secrets${RESET}\n"
-kubectl apply -f srcs/secrets/mysql-secret.yaml
-kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml
+# kubectl apply -f srcs/secrets/mysql-secret.yaml
+# kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml
 
 # build docker image
 printf "${GREEN}Creating docker images.${RESET}\n"
@@ -132,26 +132,29 @@ buildImg phpmyadmin
 buildImg influxdb
 buildImg grafana
 buildImg ftps
-
-# deploy service
-printf "${GREEN}Creating deployments.${RESET}\n"
-deploy influxdb
-deploy mysql
-deploy nginx
-deploy wordpress
-deploy phpmyadmin
-deploy ftps
-deploy grafana
-
-# apply metallb config
-printf $GREEN "Restarting$CYAN Minikube$GREEN.$RESET\n"
-minikube stop && minikube start --vm-driver=virtualbox
-eval $(minikube docker-env)
-
-printf $GREEN "Create$CYAN metallb$GREEN configmap. $RESET\n"
 sh ./srcs/metallb/create_configmap.sh
 
-printf $GREEN "Configure$CYAN metallb$GREEN.$RESET\n"
-kubectl delete configmap -n metallb-system config   2>&1 >> $LOG
-kubectl create -f srcs/metallb/configmap.yaml       2>&1 >> $LOG
+kubectl apply -k ./srcs/
+
+# deploy service
+# printf "${GREEN}Creating deployments.${RESET}\n"
+# deploy influxdb
+# deploy mysql
+# deploy nginx
+# deploy wordpress
+# deploy phpmyadmin
+# deploy ftps
+# deploy grafana
+
+# apply metallb config
+# printf $GREEN "Restarting$CYAN Minikube$GREEN.$RESET\n"
+# minikube stop && minikube start --vm-driver=virtualbox
+# eval $(minikube docker-env)
+
+# printf $GREEN "Create$CYAN metallb$GREEN configmap. $RESET\n"
+sh ./srcs/metallb/create_configmap.sh
+
+# printf $GREEN "Configure$CYAN metallb$GREEN.$RESET\n"
+# kubectl delete configmap -n metallb-system config   2>&1 >> $LOG
+# kubectl create -f srcs/metallb/configmap.yaml       2>&1 >> $LOG
 minikube dashboard

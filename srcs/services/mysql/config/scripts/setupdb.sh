@@ -5,7 +5,11 @@ set -e
 # start telegraf
 cd /telegraf-1.15.2/usr/bin/ && ./telegraf &
 cd /
-#Start mysqld
+
+chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATADIR}
+mysql_install_db --user=${MYSQL_USER} --ldata=${MYSQL_DATADIR} > /dev/null 
+
+# Start mysqld
 /usr/bin/mysqld --datadir=/var/lib/mysql --user=mysql & 
 
 # Wait until mysqld is ready

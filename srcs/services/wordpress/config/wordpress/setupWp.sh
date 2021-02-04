@@ -10,11 +10,15 @@ nginx -t 2>&1 >> wp.log
 
 nginx &
 
-sleep 30
+wp db check --path=${WWW_ROOT}
+while [ "$?" != "0" ]
+do 
+wp db check --path=${WWW_ROOT}
+done
 
-wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 wp plugin uninstall akismet --deactivate --path=${WWW_ROOT}
 wp plugin uninstall hello --deactivate --path=${WWW_ROOT}
+wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 
 while [ 1 ]
 do 

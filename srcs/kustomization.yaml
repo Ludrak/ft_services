@@ -1,0 +1,22 @@
+# Kubernetes resources
+resources:
+  # role-binding
+  - ./role-binding.yaml
+  # Load Balancer
+  - ./metallb/configmap.yaml
+  # InfluxDB
+  - ./services/influxDB/deployment.yaml
+  # MySQL
+  - ./secrets/mysql-secret.yaml
+  - ./services/mysql/deployment.yaml
+  # Nginx
+  - ./services/nginx/deployment.yaml
+  # PHPMyAdmin
+  - ./secrets/phpmyadmin-secret.yaml
+  - ./services/phpmyadmin/deployment.yaml
+  # WordPress
+  - ./services/wordpress/deployment.yaml
+  # FTPS
+  - ./services/ftps/deployment.yaml
+    # Grafana
+  - ./services/grafana/deployment.yaml
