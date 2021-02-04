@@ -36,15 +36,15 @@ spec:
         volumeMounts:
         - name: mariadb-secret-volume
           mountPath: /etc/kub/secret-volume
-        - name: mariadb-persistent-volume
-          mountPath: /var/lib/mysql
+#        - name: mariadb-persistent-volume
+#          mountPath: /var/lib/mysql
       volumes:
       - name: mariadb-secret-volume
         secret:
           secretName: mariadb-secret
-      - name: mariadb-persistent-volume
-        persistentVolumeClaim:
-          claimName: mariadb-volume
+#      - name: mariadb-persistent-volume
+#        persistentVolumeClaim:
+#          claimName: mariadb-volume
         # volumeMounts:
         # - name: mysql-persistent-storage
         #   mountPath: /var/lib/mysql
