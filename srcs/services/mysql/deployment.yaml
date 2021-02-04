@@ -1,16 +1,16 @@
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: mysql-pv-claim
-#   labels:
-#     app: wordpress
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 20Gi
-# ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-volume
+  labels:
+    app: mariadb-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,10 +36,15 @@ spec:
         volumeMounts:
         - name: mysql-secret-volume
           mountPath: /etc/kub/secret-volume
+#        - name: mariadb-persistent-volume
+#          mountPath: /var/lib/mysql
       volumes:
       - name: mysql-secret-volume
         secret:
           secretName: mysql-secret
+#      - name: mariadb-persistent-volume
+#        persistentVolumeClaim:
+#          claimName: mariadb-volume
         # volumeMounts:
         # - name: mysql-persistent-storage
         #   mountPath: /var/lib/mysql

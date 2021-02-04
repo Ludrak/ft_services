@@ -53,6 +53,7 @@ kubectl delete deploy $( kubectl get deploy | grep mysql | cut -d ' ' -f 1 )
 kubectl delete svc $( kubectl get svc | grep mysql-service | cut -d ' ' -f 1 )
 
 kubectl delete secret mysql-secret
+kubectl delete pvc/mysql-volume
 kubectl apply -f srcs/secrets/mysql-secret.yaml 
 
 sh ./srcs/scripts/container-build.sh --image=mysql-image --path=./srcs/services/mysql/
