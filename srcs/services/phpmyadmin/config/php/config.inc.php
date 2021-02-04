@@ -29,7 +29,7 @@ $i++;
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type']			= 'config';
 // /* Server parameters */
-$cfg['Servers'][$i]['host']					= 'mariadb-service';
+$cfg['Servers'][$i]['host']					= 'mysql-service';
 $cfg['Servers'][$i]['user'] = '';
 $cfg['Servers'][$i]['password'] = '';
 

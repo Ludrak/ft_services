@@ -17,8 +17,8 @@ skip-networking         =   false
 ## Securing the Database with ssl option and certificates ##
 ssl                     =   on
 ssl-ca                  =   /etc/ssl/certs/ca-certificates.crt
-ssl-cert                =   /etc/ssl/certs/mariadb-selfsigned.crt
-ssl-key                 =   /etc/ssl/private/mariadb-selfsigned.key
+ssl-cert                =   /etc/ssl/certs/mysql-selfsigned.crt
+ssl-key                 =   /etc/ssl/private/mysql-selfsigned.key
 ssl-cipher				=	DHE-RSA-AES256-SHA
 
 # Galera-related settings

@@ -44,10 +44,10 @@ A ftps server listening on port 21.
 
 # BDD
 ## MariaDB
-Mariadb ID:         root    
-Mariadb password:   toor
+mysql ID:         root    
+mysql password:   toor
 
-MariaDB store data of phpmyadmin and wordpress services.
+mysql store data of phpmyadmin and wordpress services.
 
 ## InfluxDB
 
@@ -61,14 +61,14 @@ Metallb allow to have all deployments under only on IP address.
 Secrets are a good way to safely store passwords and other sensible data with kubernetes.    
 They are accessible in container by a volume.    
 Our secrets are stored in ./srcs/secrets/    
-- mariadb-secret
+- mysql-secret
 - phpmyadmin-secret
 
 ## Scripts
 
 - secret_encrypt.sh: Script thats contain all passwords and print their Base64-encrypt version.
 - container-build: Script thats create images from a path to dockerfile.     
-- setupdebug: recreate and deploy a service pass in param. (wp, maria, php, nginx).
+- setupdebug: recreate and deploy a service pass in param. (wp, maria, php, nginx, grafana).
 
 ## Usefull commands:
 - get container logs   
@@ -82,10 +82,7 @@ Our secrets are stored in ./srcs/secrets/
     `kubectl create -f srcs/metallb/configmap.yaml`
 
 ### TODO List
-TODO Create volume for mariadb    
+TODO Create volume for mysql    
 TODO Delete volumes when setup.sh with specific option  
-TODO add a kustomize.yaml
-
--- nginx   
-MAYBE Faire page d'acceuil pour le server nginx     
-
+MAYBE add a kustomize.yaml
+TODO    add life probs

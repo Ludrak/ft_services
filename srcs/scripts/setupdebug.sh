@@ -49,14 +49,14 @@ fi
 if [[ $1 == "maria" ]]
 then
 eval $(minikube docker-env)
-kubectl delete deploy $( kubectl get deploy | grep mariadb | cut -d ' ' -f 1 )
-kubectl delete svc $( kubectl get svc | grep mariadb-service | cut -d ' ' -f 1 )
+kubectl delete deploy $( kubectl get deploy | grep mysql | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep mysql-service | cut -d ' ' -f 1 )
 
-kubectl delete secret mariadb-secret
-kubectl apply -f srcs/secrets/mariadb-secret.yaml 
+kubectl delete secret mysql-secret
+kubectl apply -f srcs/secrets/mysql-secret.yaml 
 
-sh ./srcs/scripts/container-build.sh --image=mariadb-image --path=./srcs/services/mariadb/
-kubectl create -f srcs/services/mariadb/deployment.yaml
+sh ./srcs/scripts/container-build.sh --image=mysql-image --path=./srcs/services/mysql/
+kubectl create -f srcs/services/mysql/deployment.yaml
 minikube dashboard
 fi
 

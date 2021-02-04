@@ -14,32 +14,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mariadb
+  name: mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mariadb-app
+      app: mysql-app
   template:
     metadata:
-      name: mariadb-pod
+      name: mysql-pod
       labels:
-        app: mariadb-app
+        app: mysql-app
     spec:
       containers:
-      - name: mariadb-container
-        image: mariadb-image
+      - name: mysql-container
+        image: mysql-image
         imagePullPolicy: Never
         ports:
           - containerPort: 3306
-            name: mariadb
+            name: mysql
         volumeMounts:
-        - name: mariadb-secret-volume
+        - name: mysql-secret-volume
           mountPath: /etc/kub/secret-volume
       volumes:
-      - name: mariadb-secret-volume
+      - name: mysql-secret-volume
         secret:
-          secretName: mariadb-secret
+          secretName: mysql-secret
         # volumeMounts:
         # - name: mysql-persistent-storage
         #   mountPath: /var/lib/mysql
@@ -55,12 +55,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb-service
+  name: mysql-service
 spec:
   type: ClusterIP
   clusterIP: 10.96.0.13
   selector:
-    app: mariadb-app
+    app: mysql-app
   ports:
     - protocol: TCP
       port: 3306

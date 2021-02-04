@@ -102,12 +102,12 @@ delete	wordpress
 delete	phpmyadmin
 delete	grafana
 delete  ftps
-delete	mariadb		db
+delete	mysql		db
 delete	influxdb	db
 
 # delete prev secrets
 printf "${GREEN}Deleting existant secrets.${RESET}\n"
-kubectl delete secret mariadb-secret
+kubectl delete secret mysql-secret
 kubectl delete secret phpmyadmin-secret
 
 # switch docker to minikube docker
@@ -119,14 +119,14 @@ kubectl apply -f srcs/role-binding.yaml
 
 # Create secrets
 printf "${GREEN}Creating new secrets${RESET}\n"
-kubectl apply -f srcs/secrets/mariadb-secret.yaml
+kubectl apply -f srcs/secrets/mysql-secret.yaml
 kubectl apply -f srcs/secrets/phpmyadmin-secret.yaml
 
 # build docker image
 printf "${GREEN}Creating docker images.${RESET}\n"
 buildImg nginx-base
 buildImg nginx
-buildImg mariadb
+buildImg mysql
 buildImg wordpress
 buildImg phpmyadmin
 buildImg influxdb
@@ -136,7 +136,7 @@ buildImg ftps
 # deploy service
 printf "${GREEN}Creating deployments.${RESET}\n"
 deploy influxdb
-deploy mariadb
+deploy mysql
 deploy nginx
 deploy wordpress
 deploy phpmyadmin

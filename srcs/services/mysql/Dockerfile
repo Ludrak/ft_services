@@ -18,8 +18,8 @@ RUN     openssl req -x509 -nodes \
         -subj "/C=FR/ST=69/O=Company, Inc./CN=${MYSQL_DATABASE}" \
         -addext "subjectAltName=DNS:${MYSQL_USER}" \
         -newkey rsa:2048 \
-        -keyout /etc/ssl/private/mariadb-selfsigned.key \
-        -out    /etc/ssl/certs/mariadb-selfsigned.crt;
+        -keyout /etc/ssl/private/mysql-selfsigned.key \
+        -out    /etc/ssl/certs/mysql-selfsigned.crt;
 
 # add mysql user
 RUN     adduser -D -g "${MYSQL_USER}" ${MYSQL_USER} && \

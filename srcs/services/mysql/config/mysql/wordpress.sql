@@ -2,9 +2,9 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : mariadb-service:3306
+-- Hôte : mysql-service:3306
 -- Généré le : mer. 03 fév. 2021 à 16:25
--- Version du serveur :  10.4.15-MariaDB
+-- Version du serveur :  10.4.15-mysql
 -- Version de PHP : 7.3.26
 USE wordpress;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
