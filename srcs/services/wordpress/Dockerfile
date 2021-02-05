@@ -118,6 +118,7 @@ RUN     chmod -R 755 ${WWW_ROOT} && \
         sed -i -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/r /tmp/wp_key.txt" -e "/^define( 'AUTH_KEY',         'put your unique phrase here' );/,/^define( 'NONCE_SALT',       'put your unique phrase here' );/d" ${WWW_ROOT}/wp-config.php \
         && chmod +x /scripts/setupWp.sh
 
+COPY    config/wordpress/validity.sh    /
 
 EXPOSE  5050
 

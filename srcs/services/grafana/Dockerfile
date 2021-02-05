@@ -6,7 +6,8 @@ RUN apk update && \
 	apk add --no-cache \
 	curl \
 	libc6-compat \
-	openssl
+	openssl \
+        openrc
 
 RUN wget https://dl.grafana.com/oss/release/grafana-7.3.7.linux-amd64.tar.gz\
     && tar -zxvf grafana-7.3.7.linux-amd64.tar.gz \
