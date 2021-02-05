@@ -15,7 +15,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": null,
+	"id": 7,
 	"links": [],
 	"panels": [
 	  {
@@ -66,7 +66,6 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"alias": "",
 			"groupBy": [
 			  {
 				"params": [
@@ -76,7 +75,7 @@
 			  },
 			  {
 				"params": [
-				  "none"
+				  "null"
 				],
 				"type": "fill"
 			  }
@@ -91,7 +90,7 @@
 			  [
 				{
 				  "params": [
-					"load15"
+					"n_cpus"
 				  ],
 				  "type": "field"
 				},
@@ -101,20 +100,14 @@
 				}
 			  ]
 			],
-			"tags": [
-			  {
-				"key": "host",
-				"operator": "=",
-				"value": "ftps"
-			  }
-			]
+			"tags": []
 		  }
 		],
 		"thresholds": [],
 		"timeFrom": null,
 		"timeRegions": [],
 		"timeShift": null,
-		"title": "ftps",
+		"title": "InfluxDB",
 		"tooltip": {
 		  "shared": true,
 		  "sort": 0,
@@ -164,7 +157,7 @@
 	},
 	"timepicker": {},
 	"timezone": "",
-	"title": "ftps",
-	"uid": null,
-	"version": 0
+	"title": "InfluxDB",
+	"uid": "TFK2suLMk",
+	"version": 1
   }
