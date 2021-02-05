@@ -13,7 +13,8 @@ nginx &
 wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 while [ "$?" != "0" ]
 do 
-wp plugin install theme-my-login --activate --path=${WWW_ROOT}
+    sleep 1
+    wp plugin install theme-my-login --activate --path=${WWW_ROOT}
 done
 
 wp plugin uninstall akismet --deactivate --path=${WWW_ROOT}

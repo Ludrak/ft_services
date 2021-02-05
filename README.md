@@ -82,4 +82,7 @@ Our secrets are stored in ./srcs/secrets/
     `kubectl create -f srcs/metallb/configmap.yaml`
 
 ### TODO List
-TODO    add life probs
+
+TODO    add life probs to EVERY services (see correction subject for requiered life probs)
+TODO    add telegraf to influxdb and ftps
+TODO    create dashboard for influxdb and ftps
