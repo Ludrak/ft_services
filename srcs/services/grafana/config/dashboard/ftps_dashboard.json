@@ -15,7 +15,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": null,
+	"id": 8,
 	"links": [],
 	"panels": [
 	  {
@@ -66,7 +66,6 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"alias": "",
 			"groupBy": [
 			  {
 				"params": [
@@ -76,22 +75,24 @@
 			  },
 			  {
 				"params": [
-				  "none"
+				  "null"
 				],
 				"type": "fill"
 			  }
 			],
-			"measurement": "system",
+			"measurement": "disk",
 			"orderByTime": "ASC",
 			"policy": "default",
+			"query": "SELECT mean(\"uptime\") FROM \"cpu\" WHERE (\"host\" = 'grafana') AND $timeFilter GROUP BY time($__interval) fill(null)",
 			"queryType": "randomWalk",
+			"rawQuery": false,
 			"refId": "A",
 			"resultFormat": "time_series",
 			"select": [
 			  [
 				{
 				  "params": [
-					"load15"
+					"total"
 				  ],
 				  "type": "field"
 				},
@@ -114,7 +115,7 @@
 		"timeFrom": null,
 		"timeRegions": [],
 		"timeShift": null,
-		"title": "ftps",
+		"title": "Panel Title",
 		"tooltip": {
 		  "shared": true,
 		  "sort": 0,
@@ -152,6 +153,7 @@
 		}
 	  }
 	],
+	"refresh": "5s",
 	"schemaVersion": 26,
 	"style": "dark",
 	"tags": [],
@@ -165,6 +167,6 @@
 	"timepicker": {},
 	"timezone": "",
 	"title": "ftps",
-	"uid": null,
-	"version": 0
+	"uid": "JmIQyXLMk",
+	"version": 1
   }
