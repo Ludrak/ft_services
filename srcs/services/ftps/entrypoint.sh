@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#launch telegraf
+cd /telegraf-1.15.2/usr/bin/ && ./telegraf &
+cd /
+
 set -e
 
 CA_CERT="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
