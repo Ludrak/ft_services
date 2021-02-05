@@ -24,6 +24,12 @@ spec:
           name: nginx-tls
         - containerPort: 22
           name: nginx-ssh
+        livenessProbe:
+          httpGet:
+            path: /nginx
+            port: 80
+          initialDelaySeconds: 120
+          periodSeconds: 15
 ---
 apiVersion: v1
 kind: Service

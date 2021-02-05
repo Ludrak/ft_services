@@ -13,6 +13,7 @@ spec:
       labels:
         app: wordpress-app
     spec:
+      restartPolicy: Always
       containers:
       - name: wordpress-container
         image: wordpress-image
@@ -22,6 +23,12 @@ spec:
           name: wordpress
         - containerPort: 3307
           name: wpdb
+        livenessProbe:
+          httpGet:
+            path: /wordpress
+            port: 5050
+          initialDelaySeconds: 120
+          periodSeconds: 15
 ---
 apiVersion: v1
 kind: Service

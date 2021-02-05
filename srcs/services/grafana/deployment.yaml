@@ -13,6 +13,7 @@ spec:
       labels:
         app: grafana-app
     spec:
+      restartPolicy: Always
       containers:
       - name: grafana-container
         image: grafana-image

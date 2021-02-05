@@ -13,6 +13,7 @@ spec:
       labels:
         app: phpmyadmin-app
     spec:
+      restartPolicy: Always
       containers:
       - name: phpmyadmin-container
         image: phpmyadmin-image
@@ -25,6 +26,12 @@ spec:
         volumeMounts:
         - name: phpmyadmin-secret-volume
           mountPath: /etc/kub/secret-volume
+        livenessProbe:
+          httpGet:
+            path: /phpmyadmin
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 5
       volumes:
       - name: phpmyadmin-secret-volume
         secret:
