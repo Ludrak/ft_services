@@ -29,8 +29,8 @@ spec:
             - /bin/bash
             - -c
             - "/validity.sh"
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 60
+          periodSeconds: 20
           timeoutSeconds: 3
         # - httpGet:
         #     path: /

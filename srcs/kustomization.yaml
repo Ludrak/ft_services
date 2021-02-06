@@ -5,7 +5,7 @@ resources:
   # Load Balancer
   - ./metallb/configmap.yaml
   # InfluxDB
-  - ./services/influxDB/deployment.yaml
+  - ./services/influxdb/deployment.yaml
   # MySQL
   - ./secrets/mysql-secret.yaml
   - ./services/mysql/deployment.yaml

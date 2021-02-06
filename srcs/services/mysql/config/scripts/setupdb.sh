@@ -8,6 +8,9 @@ cd /
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATADIR}
     mysql_install_db --user=${MYSQL_USER} --ldata=${MYSQL_DATADIR} > /dev/null 
+
+fi
+if [ ! -d "/var/lib/mysql/wordpress" ]; then
     # Start mysqld and wait until mysqld is ready
     /usr/bin/mysqld --datadir=/var/lib/mysql --user=mysql & /scripts/wait_mysqld_starting.sh
 

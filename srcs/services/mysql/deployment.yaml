@@ -40,8 +40,8 @@ spec:
             - /bin/bash
             - -c
             - "/validity.sh"
-          initialDelaySeconds: 20
-          periodSeconds: 15
+          initialDelaySeconds: 60
+          periodSeconds: 20
           timeoutSeconds: 3
         volumeMounts:
         - name: mysql-secret-volume
