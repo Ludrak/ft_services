@@ -17,7 +17,7 @@ ENV     SSL_CERT="/etc/ssl/certs/tls.crt"
 ENV     SSL_KEY="/etc/ssl/private/tls.key"
 
 # dependencies
-RUN     apk --update --no-cache add bash curl jq openrc openssl vsftpd && \
+RUN     apk --update --no-cache add bash curl wget jq openrc openssl vsftpd && \
         mkdir -p /run/openrc && \
         touch /run/openrc/softlevelm
 
@@ -45,6 +45,8 @@ COPY    config/vsftpd.conf ${FTP_CONF}
 # copy init
 COPY    entrypoint.sh /entrypoint.sh
 RUN     chmod a+x /entrypoint.sh
+
+COPY    config/validity.sh      /
 
 EXPOSE  20 21 ${FTP_MIN_PORT}-${FTP_MAX_PORT}
 

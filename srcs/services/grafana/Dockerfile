@@ -5,6 +5,7 @@ LABEL	maintainer Lecaille Nathan <nlecaill@student.42lyon.fr>
 RUN apk update && \
 	apk add --no-cache \
 	curl \
+        bash \
 	libc6-compat \
 	openssl \
         openrc
@@ -47,8 +48,8 @@ RUN		adduser -DH -g 'grafana' grafana && \
 RUN		ln -s /etc/grafana/bin/grafana-cli /usr/bin && \
 		ln -s /etc/grafana/bin/grafana-server /usr/bin
 
-COPY	config/launch.sh		./launch.sh
-# COPY config/grafana.ini	etc/grafana/grafana.ini
+COPY	config/launch.sh	./launch.sh
+COPY    config/validity.sh      /
 
 EXPOSE 3000
 

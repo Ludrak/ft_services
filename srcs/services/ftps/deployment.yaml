@@ -44,6 +44,15 @@ spec:
           name: ftps-data-9
         - containerPort: 21010
           name: ftps-data-10
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - "/validity.sh"
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 3
 ---
 apiVersion: v1
 kind: Service

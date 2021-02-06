@@ -1,12 +1,12 @@
 # check process
-pidof php-fpm7 && pidof telegraf && pidof nginx
+pidof mysqld && pidof telegraf
 
 if [[ "$?" != "0" ]]
 then
     exit 1;
 fi
 # check http response
-wget --tries=2 http://localhost:5050 --no-check-certificate --spider
+mysqladmin -u root -ptoor status
 
 if [[ "$?" != "0" ]]
 then

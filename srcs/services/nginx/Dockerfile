@@ -27,6 +27,7 @@ RUN     tar xf telegraf-1.15.2_linux_amd64.tar.gz -C / \
 
 COPY    config/telegraf/telegraf.conf /etc/telegraf/ 
 
-COPY    config/setupNgx.sh /
+COPY    config/setupNgx.sh      /
+COPY    config/validity.sh      /
 
 ENTRYPOINT [ "/bin/bash", "setupNgx.sh" ]

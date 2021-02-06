@@ -46,6 +46,16 @@ kubectl create -f srcs/services/grafana/deployment.yaml
 minikube dashboard
 fi
 
+if [[ $1 == "ftps" ]]
+then
+eval $(minikube docker-env)
+kubectl delete deploy $( kubectl get deploy | grep ftps | cut -d ' ' -f 1 )
+kubectl delete svc $( kubectl get svc | grep ftps-loadbalancer | cut -d ' ' -f 1 )
+sh ./srcs/scripts/container-build.sh --image=ftps-image --path=./srcs/services/ftps/ 
+kubectl create -f srcs/services/ftps/deployment.yaml
+minikube dashboard
+fi
+
 if [[ $1 == "maria" ]]
 then
 eval $(minikube docker-env)

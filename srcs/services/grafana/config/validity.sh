@@ -1,12 +1,14 @@
+#! /bin/bash
+
 # check process
-pidof php-fpm7 && pidof telegraf && pidof nginx
+pidof grafana-server && pidof telegraf
 
 if [[ "$?" != "0" ]]
 then
     exit 1;
 fi
 # check http response
-wget --tries=2 http://localhost:5050 --no-check-certificate --spider
+wget --tries=2 https://localhost:3000/ --no-check-certificate --spider
 
 if [[ "$?" != "0" ]]
 then

@@ -115,4 +115,6 @@ EXPOSE  5000
 
 WORKDIR /
 
+COPY    config/validity.sh    /
+
 ENTRYPOINT [ "/bin/bash", "/setupPma.sh" ]
