@@ -64,12 +64,12 @@ buildImg()
     spin[2]="|"
     spin[3]="/"
 
-    printf "building $CYAN$1$RESET ${spin[0]}"
+    printf "building $CYAN$1$RESET\n"
     while kill -0 $pid 2>/dev/null
     do
         for i in "${spin[@]}"
         do
-                echo -ne "\b$i"
+                printf "\r\b$i"
                 sleep 0.15
         done
     done
